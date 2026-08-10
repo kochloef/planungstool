@@ -468,6 +468,7 @@ let currentUser=null,isAdmin=false;
 let editingEpicId=null,editingTaskId=null,editingSubtaskId=null,editingRecurringId=null,currentSubtaskParentId=null;
 let tlMode='week',tlOffset=0;
 let openEpicIds=new Set(),openTaskIds=new Set(),openSubtaskIds=new Set();
+let tlCollapsedEpics=new Set(), tlCollapsedTasks=new Set();
 let notifPanelOpen=false;
 
 // ── BERLIN TIME ──
@@ -1040,17 +1041,12 @@ function renderTimeline(){
 
   const dayNames=['So','Mo','Di','Mi','Do','Fr','Sa'];
   const labelW=220;
-
-  // Calculate column width to fill available space
   const outer=document.getElementById('tl-outer');
   const availW=outer.clientWidth||window.innerWidth-80;
   const dataW=availW-labelW;
-  // Natural column width fills screen; minimum for scroll
   const minColW=tlMode==='week'?60:22;
   const naturalColW=Math.max(minColW,Math.floor(dataW/days.length));
-  // Total table width
   const totalW=labelW+naturalColW*days.length;
-  // Set inner width so scroll works when content wider than container
   document.getElementById('tl-inner').style.width=totalW+'px';
 
   let html=`<table class="tl-table" style="width:${totalW}px;table-layout:fixed;">`;
@@ -1059,9 +1055,14 @@ function renderTimeline(){
   html+=days.map(d=>{const ds=dateToStr(d);return`<th class="${ds===today?'tl-today':''}" style="width:${naturalColW}px;">${dayNames[d.getDay()]}<br><span style="font-size:.78em">${d.getDate()}</span></th>`;}).join('');
   html+=`</tr></thead><tbody>`;
 
+  // Empty day cells helper
+  function emptyCells(){
+    return days.map(d=>`<td class="${dateToStr(d)===today?'tl-today':''}"></td>`).join('');
+  }
+
   // Bar cells helper
   function barCells(iStart,iEnd,barInner){
-    if(!iStart||!iEnd)return days.map(d=>`<td class="${dateToStr(d)===today?'tl-today':''}"></td>`).join('');
+    if(!iStart||!iEnd)return emptyCells();
     const out=[];let i=0;
     while(i<days.length){
       const ds=dateToStr(days[i]);
@@ -1103,19 +1104,53 @@ function renderTimeline(){
     const epicTasks=visTasks.filter(t=>t.epic_id===epic.id&&t.start_date&&t.end_date);
     if(!epicTasks.length)return;
     const epicColor=epic.bar_color||'#00F0A4';
-    html+=`<tr class="tl-epic-row"><td class="tl-lbl">📁 ${epic.title}</td>${days.map(d=>`<td class="${dateToStr(d)===today?'tl-today':''}"></td>`).join('')}</tr>`;
-    epicTasks.forEach(task=>{
-      html+=`<tr class="tl-task-row"><td class="tl-lbl"><span class="status-badge status-${task.status}" style="font-size:.65rem;margin-right:4px;">${statusLabel(task.status)}</span>${task.title}</td>${barCells(task.start_date,task.end_date,taskBar(task,epicColor))}</tr>`;
-      subtasks.filter(s=>s.task_id===task.id&&s.start_date&&s.end_date).forEach(sub=>{
-        const isDone=sub.status==='done';
-        html+=`<tr class="tl-sub-row"><td class="tl-lbl"><span class="${isDone?'sub-status-done':'sub-status-open'}" style="margin-right:4px;">${isDone?'✓':'○'}</span>${sub.title}</td>${barCells(sub.start_date,sub.end_date,subBar(sub))}</tr>`;
+    const epicCollapsed=tlCollapsedEpics.has(epic.id);
+    const epicChevron=epicCollapsed?'▶':'▼';
+
+    // Epic row – clickable to collapse/expand tasks
+    html+=`<tr class="tl-epic-row" style="cursor:pointer;" data-tl-epic="${epic.id}">
+      <td class="tl-lbl">
+        <span style="margin-right:6px;font-size:.75rem;color:var(--green);">${epicChevron}</span>📁 ${epic.title}
+        <span style="font-size:.7rem;color:rgba(255,255,255,0.4);margin-left:6px;">${epicCollapsed?'(eingeklappt)':''}</span>
+      </td>
+      ${emptyCells()}
+    </tr>`;
+
+    if(!epicCollapsed){
+      epicTasks.forEach(task=>{
+        const taskSubs=subtasks.filter(s=>s.task_id===task.id&&s.start_date&&s.end_date);
+        const taskCollapsed=tlCollapsedTasks.has(task.id);
+        const taskChevron=taskSubs.length?(taskCollapsed?'▶':'▼'):'';
+
+        // Task row – clickable to collapse/expand subtasks
+        html+=`<tr class="tl-task-row ${taskSubs.length?'':''}">
+          <td class="tl-lbl" ${taskSubs.length?`data-tl-task="${task.id}" style="cursor:pointer;"`:''}">
+            ${taskSubs.length?`<span style="margin-right:4px;font-size:.7rem;color:#aaa;">${taskChevron}</span>`:'<span style="margin-right:14px;"></span>'}
+            <span class="status-badge status-${task.status}" style="font-size:.65rem;margin-right:4px;">${statusLabel(task.status)}</span>${task.title}
+          </td>
+          ${barCells(task.start_date,task.end_date,taskBar(task,epicColor))}
+        </tr>`;
+
+        // Subtask rows – only if task not collapsed
+        if(!taskCollapsed){
+          taskSubs.forEach(sub=>{
+            const isDone=sub.status==='done';
+            html+=`<tr class="tl-sub-row">
+              <td class="tl-lbl">
+                <span class="${isDone?'sub-status-done':'sub-status-open'}" style="margin-right:4px;">${isDone?'✓':'○'}</span>${sub.title}
+              </td>
+              ${barCells(sub.start_date,sub.end_date,subBar(sub))}
+            </tr>`;
+          });
+        }
       });
-    });
+    }
   });
 
+  // Recurring section
   if(recurringInstances.length){
     html+=`<tr class="tl-divider"><td colspan="${days.length+1}"></td></tr>`;
-    html+=`<tr class="tl-rec-hdr"><td class="tl-lbl">🔄 WIEDERKEHRENDE AUFGABEN</td>${days.map(d=>`<td class="${dateToStr(d)===today?'tl-today':''}"></td>`).join('')}</tr>`;
+    html+=`<tr class="tl-rec-hdr"><td class="tl-lbl">🔄 WIEDERKEHRENDE AUFGABEN</td>${emptyCells()}</tr>`;
     recurringTasks.forEach(rt=>{
       const ins=recurringInstances.filter(i=>i.recurring_task_id===rt.id);if(!ins.length)return;
       const barMap={};
@@ -1140,6 +1175,24 @@ function renderTimeline(){
 
   html+='</tbody></table>';
   document.getElementById('tl-container').innerHTML=html;
+
+  // ── CLICK HANDLERS für Ein/Ausklappen ──
+  document.querySelectorAll('[data-tl-epic]').forEach(row=>{
+    row.addEventListener('click',()=>{
+      const id=row.dataset.tlEpic;
+      if(tlCollapsedEpics.has(id)) tlCollapsedEpics.delete(id);
+      else tlCollapsedEpics.add(id);
+      renderTimeline();
+    });
+  });
+  document.querySelectorAll('[data-tl-task]').forEach(cell=>{
+    cell.addEventListener('click',()=>{
+      const id=cell.dataset.tlTask;
+      if(tlCollapsedTasks.has(id)) tlCollapsedTasks.delete(id);
+      else tlCollapsedTasks.add(id);
+      renderTimeline();
+    });
+  });
 }
 
 // Recalculate timeline on window resize
