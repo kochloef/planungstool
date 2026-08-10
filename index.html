@@ -89,19 +89,24 @@
     .col-done       .kanban-col-header{border-top:3px solid #003323;}
     .col-count{background:var(--gray);color:#555;border-radius:20px;padding:2px 9px;font-size:.8rem;font-weight:700;}
     .kanban-cards{padding:10px;min-height:60px;}
-    .kanban-card{background:var(--bg);border:1.5px solid var(--gray);border-radius:8px;padding:11px 13px;margin-bottom:6px;cursor:grab;transition:box-shadow .18s,border-color .18s;position:relative;}
+    /* Task card */
+    .kanban-card{background:var(--bg);border:1.5px solid var(--gray);border-radius:8px;padding:11px 13px;margin-bottom:4px;cursor:grab;transition:box-shadow .18s,border-color .18s;position:relative;}
     .kanban-card:hover{box-shadow:0 4px 14px rgba(0,51,35,0.13);border-color:var(--green);}
     .kanban-card.sortable-ghost{opacity:.4;}
-    /* Subtask cards */
-    .kanban-subtask-card{background:var(--white);border:1px dashed var(--gray2);border-radius:6px;padding:8px 11px;margin-bottom:5px;margin-left:16px;cursor:grab;transition:box-shadow .18s,border-color .18s;position:relative;font-size:.88rem;}
-    .kanban-subtask-card:hover{box-shadow:0 2px 8px rgba(0,51,35,0.10);border-color:var(--green);}
-    .kanban-subtask-card.sortable-ghost{opacity:.4;}
-    .subtask-parent-label{font-size:.7rem;color:#aaa;margin-bottom:3px;}
+    /* Subtask pills under task card */
+    .subtask-pills{margin-top:8px;display:flex;flex-direction:column;gap:4px;padding-left:12px;border-left:2px solid var(--gray);}
+    .subtask-pill{display:flex;align-items:center;justify-content:space-between;background:var(--white);border:1px solid var(--gray);border-radius:6px;padding:5px 9px;font-size:.78rem;}
+    .subtask-pill-title{color:var(--text);font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .subtask-pill-status{font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:6px;white-space:nowrap;flex-shrink:0;}
+    .pill-open{background:#e2e8f0;color:#475569;}
+    .pill-done{background:#003323;color:var(--green);}
+    .subtask-pill-toggle{background:none;border:none;cursor:pointer;font-size:.75rem;margin-left:6px;color:#aaa;transition:color .15s;flex-shrink:0;}
+    .subtask-pill-toggle:hover{color:var(--green);}
     .card-epic-badge{font-size:.72rem;font-weight:700;color:var(--dark);padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:6px;opacity:.9;}
     .card-title{font-weight:600;font-size:.93rem;margin-bottom:5px;}
     .card-meta{font-size:.78rem;color:#777;display:flex;gap:10px;flex-wrap:wrap;}
     .card-actions{position:absolute;top:8px;right:8px;display:flex;gap:4px;opacity:0;transition:opacity .18s;}
-    .kanban-card:hover .card-actions,.kanban-subtask-card:hover .card-actions{opacity:1;}
+    .kanban-card:hover .card-actions{opacity:1;}
     .card-actions button{background:var(--white);border:1px solid var(--gray2);border-radius:5px;padding:3px 7px;cursor:pointer;font-size:.78rem;transition:all .15s;}
     .card-actions button:hover{background:var(--green);border-color:var(--green);}
     .card-progress{margin-top:8px;}
@@ -109,7 +114,6 @@
     .progress-bar-fill{height:100%;border-radius:4px;transition:width .3s;}
     .progress-label{font-size:.72rem;color:#888;margin-top:2px;}
     .done-actions{display:flex;justify-content:flex-end;padding:10px 10px 0;}
-    .task-group{margin-bottom:4px;}
 
     /* EPICS VIEW */
     .epics-list{display:flex;flex-direction:column;gap:18px;}
@@ -140,6 +144,8 @@
     .status-todo{background:#d1fae5;color:#065f46;}
     .status-in_progress{background:#ccfbf1;color:var(--dark);}
     .status-done{background:#003323;color:var(--green);}
+    .sub-status-open{background:#e2e8f0;color:#475569;font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:8px;}
+    .sub-status-done{background:#003323;color:var(--green);font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:8px;}
     .task-row-right{display:flex;align-items:center;gap:8px;}
     .task-row-right button{background:var(--white);border:1px solid var(--gray2);border-radius:5px;padding:3px 9px;cursor:pointer;font-size:.78rem;transition:all .15s;}
     .task-row-right button:hover{background:var(--green);border-color:var(--green);}
@@ -180,7 +186,7 @@
     .comment-input-row{display:flex;gap:8px;}
     .comment-input-row input{flex:1;padding:9px 12px;border:1.5px solid var(--gray2);border-radius:8px;font-size:.88rem;outline:none;transition:border .18s;}
     .comment-input-row input:focus{border-color:var(--green);}
-    .comment-send-btn{background:var(--green);color:var(--dark);border:none;border-radius:8px;padding:9px 14px;cursor:pointer;font-weight:700;font-size:.88rem;transition:background .18s;}
+    .comment-send-btn{background:var(--green);color:var(--dark);border:none;border-radius:8px;padding:9px 14px;cursor:pointer;font-weight:700;font-size:.88rem;}
     .comment-send-btn:hover{background:#00d492;}
 
     /* TIMELINE */
@@ -192,38 +198,43 @@
     .timeline-nav button{background:var(--dark);color:var(--white);border:none;border-radius:7px;padding:7px 14px;cursor:pointer;font-size:.95rem;transition:background .18s;}
     .timeline-nav button:hover{background:var(--dark2);}
     .timeline-period{font-weight:700;font-size:.95rem;color:var(--dark);min-width:180px;text-align:center;}
-    #timeline-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius);box-shadow:var(--shadow);}
-    #timeline-container{background:var(--white);min-width:600px;}
-    .timeline-table{width:100%;border-collapse:collapse;}
-    .timeline-table th{background:var(--dark);color:var(--white);padding:9px 4px;font-size:.78rem;text-align:center;border-right:1px solid rgba(255,255,255,0.1);white-space:nowrap;position:sticky;top:0;z-index:10;}
-    .timeline-table th.today-col{background:var(--dark2);color:var(--green);}
-    .timeline-label-col{width:240px;min-width:200px;position:sticky;left:0;z-index:11;background:var(--dark);}
-    .timeline-table td{border-right:1px solid var(--gray);border-bottom:1px solid var(--gray);padding:0;height:36px;position:relative;}
-    .timeline-table td.label-cell{padding:0 10px;font-size:.83rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px;background:var(--bg);position:sticky;left:0;z-index:5;}
-    .timeline-table td.today-col{background:rgba(0,240,164,0.06);}
-    .tl-epic-row td{background:rgba(0,51,35,0.06);}
-    .tl-epic-row td.label-cell{font-weight:700;font-size:.88rem;color:var(--dark);background:rgba(0,51,35,0.06);}
-    /* Task indent */
-    .tl-task-row td.label-cell{padding-left:20px;background:var(--bg);}
-    /* Subtask indent */
-    .tl-subtask-row td.label-cell{padding-left:40px;font-size:.8rem;color:#666;background:rgba(248,245,241,0.9);}
-    .tl-subtask-row td{background:rgba(248,245,241,0.4);}
-    .tl-recurring-header td{background:rgba(0,51,35,0.12);}
-    .tl-recurring-header td.label-cell{font-weight:700;font-size:.88rem;color:var(--dark);background:rgba(0,51,35,0.12);letter-spacing:.3px;}
-    .tl-recurring-row td.label-cell{padding-left:20px;font-size:.82rem;color:#555;background:rgba(123,158,166,0.07);}
-    .tl-recurring-row td{background:rgba(123,158,166,0.04);}
-    .tl-section-divider td{background:var(--dark);height:4px;padding:0;}
+    /* Scroll wrapper */
+    #timeline-scroll{width:100%;overflow-x:scroll;overflow-y:visible;-webkit-overflow-scrolling:touch;border-radius:var(--radius);box-shadow:var(--shadow);background:var(--white);}
+    #timeline-container{display:inline-block;min-width:100%;}
+    .tl-table{border-collapse:collapse;background:var(--white);}
+    .tl-table th{background:var(--dark);color:var(--white);padding:9px 4px;font-size:.78rem;text-align:center;border-right:1px solid rgba(255,255,255,0.1);white-space:nowrap;min-width:36px;}
+    .tl-table th.tl-label-th{min-width:240px;width:240px;text-align:left;padding-left:12px;position:sticky;left:0;z-index:10;background:var(--dark);}
+    .tl-table th.today-col{background:var(--dark2);color:var(--green);}
+    .tl-table td{border-right:1px solid var(--gray);border-bottom:1px solid var(--gray);padding:0;height:36px;position:relative;min-width:36px;}
+    .tl-table td.tl-label{padding:0 8px;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:240px;min-width:240px;max-width:240px;background:var(--bg);position:sticky;left:0;z-index:3;border-right:2px solid var(--gray2);}
+    .tl-table td.today-col{background:rgba(0,240,164,0.07);}
+    /* Epic row */
+    .tl-epic-row td{background:rgba(0,51,35,0.07);}
+    .tl-epic-row td.tl-label{background:rgba(0,51,35,0.07);font-weight:700;font-size:.88rem;color:var(--dark);}
+    /* Task row */
+    .tl-task-row td.tl-label{padding-left:20px;background:var(--bg);}
+    /* Subtask row */
+    .tl-sub-row td{background:rgba(248,245,241,0.5);}
+    .tl-sub-row td.tl-label{padding-left:42px;font-size:.79rem;color:#555;background:rgba(248,245,241,0.9);}
+    /* Recurring */
+    .tl-rec-header td{background:rgba(0,51,35,0.12);}
+    .tl-rec-header td.tl-label{font-weight:700;font-size:.86rem;color:var(--dark);background:rgba(0,51,35,0.12);}
+    .tl-rec-row td.tl-label{padding-left:20px;font-size:.82rem;color:#555;background:rgba(123,158,166,0.07);}
+    .tl-rec-row td{background:rgba(123,158,166,0.04);}
+    .tl-divider td{background:var(--dark);height:4px;padding:0;}
+    /* Bar */
     .tl-bar-cell{position:relative;overflow:visible;}
-    .tl-bar{position:absolute;top:5px;height:24px;border-radius:5px;display:flex;align-items:center;overflow:visible;box-shadow:0 1px 4px rgba(0,0,0,0.13);cursor:move;transition:opacity .15s;min-width:10px;user-select:none;z-index:4;}
-    .tl-bar:hover{opacity:.88;z-index:6;}
-    .tl-bar-inner{position:absolute;inset:0;border-radius:5px;overflow:hidden;pointer-events:none;}
-    .tl-bar-fill{height:100%;border-radius:5px 0 0 5px;transition:width .3s;background:rgba(0,0,0,0.18);}
-    .tl-bar-label{position:absolute;left:10px;right:16px;font-size:.68rem;font-weight:700;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px rgba(0,0,0,0.3);pointer-events:none;top:50%;transform:translateY(-50%);}
-    .tl-resize-left{position:absolute;left:0;top:0;bottom:0;width:8px;cursor:col-resize;border-radius:5px 0 0 5px;background:rgba(255,255,255,0.25);opacity:0;transition:opacity .15s;}
-    .tl-resize-right{position:absolute;right:0;top:0;bottom:0;width:8px;cursor:col-resize;border-radius:0 5px 5px 0;background:rgba(255,255,255,0.25);opacity:0;transition:opacity .15s;}
-    .tl-bar:hover .tl-resize-left,.tl-bar:hover .tl-resize-right{opacity:1;}
-    .tl-recurring-bar{border:2px dashed #7B9EA6 !important;background:rgba(123,158,166,0.18) !important;box-shadow:none !important;cursor:move;}
-    .tl-recurring-bar .tl-bar-label{color:#3a6572;text-shadow:none;}
+    .tl-bar{position:absolute;top:5px;left:2px;right:2px;height:24px;border-radius:5px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.12);z-index:2;}
+    /* Task bar: gray bg + epic color fill */
+    .tl-bar-task-bg{position:absolute;inset:0;background:#d6d3cf;border-radius:5px;}
+    .tl-bar-task-fill{position:absolute;top:0;left:0;bottom:0;border-radius:5px 0 0 5px;transition:width .3s;}
+    /* Subtask bar: standard */
+    .tl-bar-sub-bg{position:absolute;inset:0;background:#7B9EA6;border-radius:5px;opacity:.35;}
+    .tl-bar-sub-fill{position:absolute;top:0;left:0;bottom:0;border-radius:5px 0 0 5px;background:#4a7a8a;opacity:.8;}
+    /* Recurring bar */
+    .tl-bar-rec{position:absolute;inset:0;border-radius:5px;background:rgba(123,158,166,0.2);border:2px dashed #7B9EA6;}
+    .tl-bar-label{position:absolute;inset:0;display:flex;align-items:center;padding:0 7px;font-size:.67rem;font-weight:700;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 3px rgba(0,0,0,0.4);pointer-events:none;z-index:3;}
+    .tl-bar-label.dark-label{color:#1a1a1a;text-shadow:none;}
 
     /* RECURRING VIEW */
     .recurring-list{display:flex;flex-direction:column;gap:14px;}
@@ -231,7 +242,6 @@
     .recurring-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
     .recurring-card-title{font-weight:700;font-size:1rem;}
     .recurring-card-meta{font-size:.83rem;color:#777;margin-bottom:8px;}
-    .recurring-card-actions{display:flex;gap:8px;}
 
     /* COLOR PALETTE */
     .color-palette{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
@@ -312,7 +322,7 @@
     </div>
   </header>
 
-  <!-- NOTIFICATION PANEL -->
+  <!-- NOTIF PANEL -->
   <div class="notif-panel" id="notif-panel">
     <div class="notif-panel-header">
       <h3>🔔 Benachrichtigungen</h3>
@@ -351,7 +361,7 @@
     </div>
   </div>
 
-  <!-- EPICS VIEW -->
+  <!-- EPICS -->
   <div class="view" id="view-epics">
     <div class="page-header">
       <h2>Epics &amp; Aufgaben</h2>
@@ -376,10 +386,10 @@
         <button id="tl-today" style="background:var(--green);color:var(--dark);border:none;border-radius:7px;padding:7px 14px;cursor:pointer;font-weight:700;">Heute</button>
       </div>
     </div>
-    <div id="timeline-wrapper"><div id="timeline-container"></div></div>
+    <div id="timeline-scroll"><div id="timeline-container"></div></div>
   </div>
 
-  <!-- RECURRING (Admin only) -->
+  <!-- RECURRING -->
   <div class="view" id="view-recurring">
     <div class="page-header">
       <h2>Wiederkehrende Aufgaben</h2>
@@ -390,40 +400,31 @@
 </div>
 
 <!-- MODALS -->
-<!-- Epic Modal -->
 <div class="modal-overlay" id="modal-epic">
   <div class="modal">
     <button class="modal-close" data-close="modal-epic">✕</button>
     <h3 id="modal-epic-title">Neues Epic</h3>
-    <div class="form-group"><label>Titel *</label><input type="text" id="epic-title" placeholder="Epic Titel..."/></div>
-    <div class="form-group"><label>Beschreibung</label><textarea id="epic-desc" placeholder="Beschreibung..."></textarea></div>
-    <div class="form-group">
-      <label>Farbe für Timeline-Balken</label>
-      <div class="color-palette" id="epic-color-palette"></div>
-      <input type="hidden" id="epic-color" value="#00F0A4"/>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-secondary" data-close="modal-epic">Abbrechen</button>
-      <button class="btn-primary" id="btn-save-epic">Speichern</button>
-    </div>
+    <div class="form-group"><label>Titel *</label><input type="text" id="epic-title"/></div>
+    <div class="form-group"><label>Beschreibung</label><textarea id="epic-desc"></textarea></div>
+    <div class="form-group"><label>Farbe</label><div class="color-palette" id="epic-color-palette"></div><input type="hidden" id="epic-color" value="#00F0A4"/></div>
+    <div class="modal-actions"><button class="btn-secondary" data-close="modal-epic">Abbrechen</button><button class="btn-primary" id="btn-save-epic">Speichern</button></div>
   </div>
 </div>
 
-<!-- Task Modal -->
 <div class="modal-overlay" id="modal-task">
   <div class="modal">
     <button class="modal-close" data-close="modal-task">✕</button>
     <h3 id="modal-task-title">Neue Aufgabe</h3>
     <div class="form-group"><label>Epic *</label><select id="task-epic"></select></div>
-    <div class="form-group"><label>Titel *</label><input type="text" id="task-title" placeholder="Aufgaben Titel..."/></div>
-    <div class="form-group"><label>Beschreibung</label><textarea id="task-desc" placeholder="Beschreibung..." style="min-height:140px;"></textarea></div>
+    <div class="form-group"><label>Titel *</label><input type="text" id="task-title"/></div>
+    <div class="form-group"><label>Beschreibung</label><textarea id="task-desc" style="min-height:140px;"></textarea></div>
     <div class="form-row">
       <div class="form-group"><label>Startdatum</label><input type="date" id="task-start"/></div>
       <div class="form-group"><label>Enddatum</label><input type="date" id="task-end"/></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Zeitschätzung (Stunden)</label><input type="number" id="task-est" placeholder="z.B. 8" min="0" step="0.5"/></div>
-      <div class="form-group" id="task-logged-group"><label>Protokollierte Zeit (Std.)</label><input type="number" id="task-logged" placeholder="z.B. 3.5" min="0" step="0.5"/></div>
+      <div class="form-group"><label>Zeitschätzung (Std.)</label><input type="number" id="task-est" min="0" step="0.5"/></div>
+      <div class="form-group" id="task-logged-group"><label>Protokollierte Zeit (Std.)</label><input type="number" id="task-logged" min="0" step="0.5"/></div>
     </div>
     <div class="form-group"><label>Status</label>
       <select id="task-status">
@@ -431,176 +432,131 @@
         <option value="in_progress">In Arbeit</option><option value="done">Abgeschlossen</option>
       </select>
     </div>
-    <div class="modal-actions">
-      <button class="btn-secondary" data-close="modal-task">Abbrechen</button>
-      <button class="btn-primary" id="btn-save-task">Speichern</button>
-    </div>
+    <div class="modal-actions"><button class="btn-secondary" data-close="modal-task">Abbrechen</button><button class="btn-primary" id="btn-save-task">Speichern</button></div>
   </div>
 </div>
 
-<!-- Subtask Modal -->
 <div class="modal-overlay" id="modal-subtask">
   <div class="modal">
     <button class="modal-close" data-close="modal-subtask">✕</button>
     <h3 id="modal-subtask-title">Neue Unteraufgabe</h3>
-    <div class="form-group"><label>Titel *</label><input type="text" id="subtask-title" placeholder="Unteraufgabe Titel..."/></div>
-    <div class="form-group"><label>Beschreibung</label><textarea id="subtask-desc" placeholder="Beschreibung..." style="min-height:140px;"></textarea></div>
+    <div class="form-group"><label>Titel *</label><input type="text" id="subtask-title"/></div>
+    <div class="form-group"><label>Beschreibung</label><textarea id="subtask-desc" style="min-height:140px;"></textarea></div>
     <div class="form-row">
       <div class="form-group"><label>Startdatum</label><input type="date" id="subtask-start"/></div>
       <div class="form-group"><label>Enddatum</label><input type="date" id="subtask-end"/></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Zeitschätzung (Stunden)</label><input type="number" id="subtask-est" placeholder="z.B. 4" min="0" step="0.5"/></div>
-      <div class="form-group" id="subtask-logged-group"><label>Protokollierte Zeit (Std.)</label><input type="number" id="subtask-logged" placeholder="z.B. 2" min="0" step="0.5"/></div>
+      <div class="form-group"><label>Zeitschätzung (Std.)</label><input type="number" id="subtask-est" min="0" step="0.5"/></div>
+      <div class="form-group" id="subtask-logged-group"><label>Protokollierte Zeit (Std.)</label><input type="number" id="subtask-logged" min="0" step="0.5"/></div>
     </div>
     <div class="form-group"><label>Status</label>
       <select id="subtask-status">
-        <option value="backlog">Backlog</option><option value="todo">Zu Erledigen</option>
-        <option value="in_progress">In Arbeit</option><option value="done">Abgeschlossen</option>
+        <option value="open">Offen</option>
+        <option value="done">Abgeschlossen</option>
       </select>
     </div>
-    <div class="modal-actions">
-      <button class="btn-secondary" data-close="modal-subtask">Abbrechen</button>
-      <button class="btn-primary" id="btn-save-subtask">Speichern</button>
-    </div>
+    <div class="modal-actions"><button class="btn-secondary" data-close="modal-subtask">Abbrechen</button><button class="btn-primary" id="btn-save-subtask">Speichern</button></div>
   </div>
 </div>
 
-<!-- Recurring Modal -->
 <div class="modal-overlay" id="modal-recurring">
   <div class="modal">
     <button class="modal-close" data-close="modal-recurring">✕</button>
     <h3 id="modal-recurring-title">Neue wiederkehrende Aufgabe</h3>
-    <div class="form-group"><label>Titel *</label><input type="text" id="rec-title" placeholder="z.B. Monatsupdate..."/></div>
-    <div class="form-group"><label>Beschreibung</label><textarea id="rec-desc" placeholder="Beschreibung..."></textarea></div>
+    <div class="form-group"><label>Titel *</label><input type="text" id="rec-title"/></div>
+    <div class="form-group"><label>Beschreibung</label><textarea id="rec-desc"></textarea></div>
     <div class="form-group"><label>Wiederholung *</label>
       <select id="rec-type">
-        <option value="weekly">Wöchentlich (bestimmter Wochentag)</option>
+        <option value="weekly">Wöchentlich</option>
         <option value="monthly_workday">Monatlich (x. Arbeitstag)</option>
-        <option value="monthly_date">Monatlich (bestimmtes Datum)</option>
+        <option value="monthly_date">Monatlich (Datum)</option>
       </select>
     </div>
     <div class="form-group" id="rec-weekday-group"><label>Wochentag</label>
-      <select id="rec-weekday">
-        <option value="0">Montag</option><option value="1">Dienstag</option>
-        <option value="2">Mittwoch</option><option value="3">Donnerstag</option><option value="4">Freitag</option>
-      </select>
+      <select id="rec-weekday"><option value="0">Montag</option><option value="1">Dienstag</option><option value="2">Mittwoch</option><option value="3">Donnerstag</option><option value="4">Freitag</option></select>
     </div>
-    <div class="form-group" id="rec-workday-group" style="display:none"><label>x. Arbeitstag des Monats</label>
-      <input type="number" id="rec-month-workday" placeholder="z.B. 3" min="1" max="23"/>
-    </div>
-    <div class="form-group" id="rec-monthdate-group" style="display:none"><label>Tag des Monats</label>
-      <input type="number" id="rec-month-date" placeholder="z.B. 1" min="1" max="28"/>
-    </div>
-    <div class="form-group"><label>Dauer (Tage)</label><input type="number" id="rec-duration" placeholder="z.B. 4" min="1" value="1"/></div>
-    <div class="modal-actions">
-      <button class="btn-secondary" data-close="modal-recurring">Abbrechen</button>
-      <button class="btn-primary" id="btn-save-recurring">Speichern &amp; Generieren</button>
-    </div>
+    <div class="form-group" id="rec-workday-group" style="display:none"><label>x. Arbeitstag</label><input type="number" id="rec-month-workday" min="1" max="23"/></div>
+    <div class="form-group" id="rec-monthdate-group" style="display:none"><label>Tag des Monats</label><input type="number" id="rec-month-date" min="1" max="28"/></div>
+    <div class="form-group"><label>Dauer (Tage)</label><input type="number" id="rec-duration" min="1" value="1"/></div>
+    <div class="modal-actions"><button class="btn-secondary" data-close="modal-recurring">Abbrechen</button><button class="btn-primary" id="btn-save-recurring">Speichern &amp; Generieren</button></div>
   </div>
 </div>
 
-<!-- Confirm -->
 <div class="confirm-overlay" id="confirm-dialog">
   <div class="confirm-box">
     <h4 id="confirm-title">Bist du sicher?</h4>
-    <p id="confirm-msg">Diese Aktion kann nicht rückgängig gemacht werden.</p>
-    <div class="confirm-actions">
-      <button class="btn-secondary" id="confirm-cancel">Abbrechen</button>
-      <button class="btn-danger" id="confirm-ok">Löschen</button>
-    </div>
+    <p id="confirm-msg"></p>
+    <div class="confirm-actions"><button class="btn-secondary" id="confirm-cancel">Abbrechen</button><button class="btn-danger" id="confirm-ok">Löschen</button></div>
   </div>
 </div>
 <div id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════
-// CONFIG
-// ══════════════════════════════════════════
 const SUPABASE_URL='https://jemtfgiezphfozeugxic.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImplbXRmZ2llenBoZm96ZXVneGljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzNDY4ODMsImV4cCI6MjEwMTkyMjg4M30.W9ABciU4WWWhQnbOz7e4R7fQFELo0FdT2xvOtEyVwXk';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-
 const COLOR_PALETTE=['#00F0A4','#003323','#004d34','#007a52','#00b87a','#7B9EA6','#4a7a8a','#2d5f6e','#a8d5c2','#d4ede6','#5b8dee','#3a6bc7','#8b5cf6','#06b6d4','#0891b2','#f59e0b','#d97706','#84cc16','#64748b','#94a3b8'];
 
-// ══════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════
 let epics=[],tasks=[],subtasks=[],comments=[],notifications=[],recurringTasks=[],recurringInstances=[];
 let currentUser=null,isAdmin=false;
-let editingEpicId=null,editingTaskId=null,editingSubtaskId=null,editingRecurringId=null;
-let currentSubtaskParentId=null;
+let editingEpicId=null,editingTaskId=null,editingSubtaskId=null,editingRecurringId=null,currentSubtaskParentId=null;
 let tlMode='week',tlOffset=0;
 let openEpicIds=new Set(),openTaskIds=new Set(),openSubtaskIds=new Set();
 let notifPanelOpen=false;
 
-// ══════════════════════════════════════════
-// TOAST & CONFIRM
-// ══════════════════════════════════════════
-function toast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='show '+type;setTimeout(()=>{t.className='';},3000);}
+// ── TOAST & CONFIRM ──
+function toast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='show '+type;setTimeout(()=>t.className='',3000);}
 function showConfirm(title,msg){
   return new Promise(resolve=>{
-    const overlay=document.getElementById('confirm-dialog');
+    const o=document.getElementById('confirm-dialog');
     document.getElementById('confirm-title').textContent=title;
     document.getElementById('confirm-msg').textContent=msg;
-    overlay.classList.add('open');
-    const ok=document.getElementById('confirm-ok'),cancel=document.getElementById('confirm-cancel');
-    function cleanup(r){overlay.classList.remove('open');ok.removeEventListener('click',onOk);cancel.removeEventListener('click',onCancel);resolve(r);}
-    function onOk(){cleanup(true);}function onCancel(){cleanup(false);}
-    ok.addEventListener('click',onOk);cancel.addEventListener('click',onCancel);
+    o.classList.add('open');
+    const ok=document.getElementById('confirm-ok'),ca=document.getElementById('confirm-cancel');
+    function cleanup(r){o.classList.remove('open');ok.removeEventListener('click',y);ca.removeEventListener('click',n);resolve(r);}
+    function y(){cleanup(true);}function n(){cleanup(false);}
+    ok.addEventListener('click',y);ca.addEventListener('click',n);
   });
 }
 
-// ══════════════════════════════════════════
-// AUTH
-// ══════════════════════════════════════════
+// ── AUTH ──
 async function checkSession(){const{data}=await sb.auth.getSession();if(data.session)onLogin(data.session.user);}
 async function doLogin(){
-  const email=document.getElementById('login-email').value.trim();
-  const pwd=document.getElementById('login-password').value;
+  const email=document.getElementById('login-email').value.trim(),pwd=document.getElementById('login-password').value;
   const err=document.getElementById('login-error');err.textContent='';
   const{data,error}=await sb.auth.signInWithPassword({email,password:pwd});
   if(error){err.textContent='Anmeldung fehlgeschlagen: '+error.message;return;}
-  localStorage.setItem('pt_email',email);
-  onLogin(data.user);
+  localStorage.setItem('pt_email',email);onLogin(data.user);
 }
 function onLogin(user){
   currentUser=user;isAdmin=!user.email.startsWith('gast@');
   if(isAdmin)document.body.classList.add('is-admin');
   document.getElementById('user-badge').textContent=isAdmin?'👤 Admin':'👁️ Gast';
   document.getElementById('login-screen').style.display='none';
-  document.getElementById('app').style.display='flex';
-  document.getElementById('app').style.flexDirection='column';
-  loadAll();
-  setInterval(loadNotifications,30000);
+  document.getElementById('app').style.cssText='display:flex;flex-direction:column;';
+  loadAll();setInterval(loadNotifications,30000);
 }
 window.addEventListener('DOMContentLoaded',()=>{const s=localStorage.getItem('pt_email');if(s)document.getElementById('login-email').value=s;});
 document.getElementById('btn-login').addEventListener('click',doLogin);
 document.getElementById('login-password').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 document.getElementById('btn-logout').addEventListener('click',async()=>{
-  await sb.auth.signOut();currentUser=null;isAdmin=false;
-  document.body.classList.remove('is-admin');
-  document.getElementById('app').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
+  await sb.auth.signOut();currentUser=null;isAdmin=false;document.body.classList.remove('is-admin');
+  document.getElementById('app').style.display='none';document.getElementById('login-screen').style.display='flex';
   document.getElementById('login-password').value='';
 });
 
-// ══════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════
+// ── NAV ──
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('view-'+btn.dataset.view).classList.add('active');
+    btn.classList.add('active');document.getElementById('view-'+btn.dataset.view).classList.add('active');
     if(btn.dataset.view==='timeline')renderTimeline();
   });
 });
 
-// ══════════════════════════════════════════
-// DATA LOAD
-// ══════════════════════════════════════════
+// ── DATA ──
 async function loadAll(){
   const[e,t,s,c,ri,rt]=await Promise.all([
     sb.from('epics').select('*').order('sort_order').order('created_at'),
@@ -612,25 +568,20 @@ async function loadAll(){
   ]);
   epics=e.data||[];tasks=t.data||[];subtasks=s.data||[];
   comments=c.data||[];recurringInstances=ri.data||[];recurringTasks=rt.data||[];
-  await loadNotifications();
-  renderKanban();renderEpics();renderRecurring();
+  await loadNotifications();renderKanban();renderEpics();renderRecurring();
   if(document.getElementById('view-timeline').classList.contains('active'))renderTimeline();
 }
 async function loadNotifications(){
   if(!currentUser)return;
-  const role=isAdmin?'admin':'guest';
-  const{data}=await sb.from('notifications').select('*').eq('for_role',role).order('created_at',{ascending:false});
+  const{data}=await sb.from('notifications').select('*').eq('for_role',isAdmin?'admin':'guest').order('created_at',{ascending:false});
   notifications=data||[];updateBellBadge();renderNotifPanel();
 }
 
-// ══════════════════════════════════════════
-// NOTIFICATIONS
-// ══════════════════════════════════════════
+// ── NOTIFICATIONS ──
 function updateBellBadge(){
-  const unread=notifications.filter(n=>!n.is_read).length;
-  const badge=document.getElementById('bell-badge');
-  if(unread>0){badge.textContent=unread>9?'9+':unread;badge.style.display='flex';}
-  else badge.style.display='none';
+  const u=notifications.filter(n=>!n.is_read).length;
+  const b=document.getElementById('bell-badge');
+  b.textContent=u>9?'9+':u;b.style.display=u>0?'flex':'none';
 }
 function renderNotifPanel(){
   const list=document.getElementById('notif-list');
@@ -643,7 +594,7 @@ function renderNotifPanel(){
       <div class="notif-time">${fmtDateTime(n.created_at)}</div>
     </div>`).join('');
   list.querySelectorAll('.notif-item').forEach(item=>{
-    item.addEventListener('click',async(e)=>{
+    item.addEventListener('click',async e=>{
       if(e.target.closest('.notif-del'))return;
       const n=notifications.find(x=>x.id===item.dataset.id);if(!n)return;
       await sb.from('notifications').update({is_read:true}).eq('id',n.id);
@@ -653,63 +604,66 @@ function renderNotifPanel(){
       document.getElementById('view-epics').classList.add('active');
       if(n.task_id)openTaskIds.add(n.task_id);
       if(n.subtask_id)openSubtaskIds.add(n.subtask_id);
-      const task=tasks.find(t=>t.id===n.task_id);
-      if(task)openEpicIds.add(task.epic_id);
+      const task=tasks.find(t=>t.id===n.task_id);if(task)openEpicIds.add(task.epic_id);
       closeNotifPanel();await loadAll();
-      setTimeout(()=>{const el=document.getElementById('task-body-'+n.task_id);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},300);
+      setTimeout(()=>document.getElementById('task-body-'+n.task_id)?.scrollIntoView({behavior:'smooth',block:'center'}),300);
     });
   });
   list.querySelectorAll('.notif-del').forEach(btn=>{
-    btn.addEventListener('click',async(e)=>{e.stopPropagation();await sb.from('notifications').delete().eq('id',btn.dataset.id);await loadNotifications();});
+    btn.addEventListener('click',async e=>{e.stopPropagation();await sb.from('notifications').delete().eq('id',btn.dataset.id);await loadNotifications();});
   });
 }
 document.getElementById('bell-btn').addEventListener('click',()=>{
-  notifPanelOpen=!notifPanelOpen;
-  document.getElementById('notif-panel').classList.toggle('open',notifPanelOpen);
+  notifPanelOpen=!notifPanelOpen;document.getElementById('notif-panel').classList.toggle('open',notifPanelOpen);
   if(notifPanelOpen)sb.from('notifications').update({is_read:true}).eq('for_role',isAdmin?'admin':'guest').then(()=>loadNotifications());
 });
 document.getElementById('notif-close').addEventListener('click',closeNotifPanel);
 document.getElementById('notif-clear-all').addEventListener('click',async()=>{await sb.from('notifications').delete().eq('for_role',isAdmin?'admin':'guest');await loadNotifications();});
 function closeNotifPanel(){notifPanelOpen=false;document.getElementById('notif-panel').classList.remove('open');}
 
-// ══════════════════════════════════════════
-// HELPERS
-// ══════════════════════════════════════════
+// ── HELPERS ──
 function statusLabel(s){return{backlog:'Backlog',todo:'Zu Erledigen',in_progress:'In Arbeit',done:'Abgeschlossen'}[s]||s;}
 function fmtDate(d){if(!d)return'–';const[y,m,day]=d.split('-');return`${day}.${m}.${y}`;}
-function fmtDateTime(ts){if(!ts)return'';const d=new Date(ts);return d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});}
+function fmtDateTime(ts){if(!ts)return'';const d=new Date(ts);return d.toLocaleDateString('de-DE')+' '+d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});}
+function dateToStr(d){return d.toISOString().split('T')[0];}
 function progressBarHTML(est,logged,color){
   if(!est||parseFloat(est)<=0)return'';
   const pct=Math.min(100,Math.round((parseFloat(logged||0)/parseFloat(est))*100));
   const fill=pct>80?'#e53e3e':pct>50?'#f59e0b':color||'#00F0A4';
   return`<div class="card-progress"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%;background:${fill}"></div></div><div class="progress-label">${parseFloat(logged||0)}h / ${parseFloat(est)}h (${pct}%)</div></div>`;
 }
-function buildPalette(containerId,hiddenId,selectedColor){
-  const container=document.getElementById(containerId);container.innerHTML='';
+function buildPalette(cId,hId,sel){
+  const c=document.getElementById(cId);c.innerHTML='';
   COLOR_PALETTE.forEach(color=>{
-    const sw=document.createElement('div');sw.className='color-swatch'+(color===selectedColor?' selected':'');
-    sw.style.background=color;sw.dataset.color=color;
-    sw.addEventListener('click',()=>{container.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('selected'));sw.classList.add('selected');document.getElementById(hiddenId).value=color;});
-    container.appendChild(sw);
+    const sw=document.createElement('div');sw.className='color-swatch'+(color===sel?' selected':'');
+    sw.style.background=color;
+    sw.addEventListener('click',()=>{c.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('selected'));sw.classList.add('selected');document.getElementById(hId).value=color;});
+    c.appendChild(sw);
   });
 }
 
-// ══════════════════════════════════════════
-// KANBAN
-// ══════════════════════════════════════════
+// ── KANBAN ──
 function renderKanban(){
   ['backlog','todo','in_progress','done'].forEach(status=>{
     const container=document.getElementById('kanban-'+status);
     container.innerHTML='';
-    const colTasks=tasks.filter(t=>t.status===status);
-    colTasks.forEach(task=>{
+    tasks.filter(t=>t.status===status).forEach(task=>{
       const epic=epics.find(e=>e.id===task.epic_id);
       const epicColor=epic?.bar_color||'#00F0A4';
       const taskSubs=subtasks.filter(s=>s.task_id===task.id);
-      // Task group wrapper
-      const group=document.createElement('div');group.className='task-group';
-      // Task card
-      const card=document.createElement('div');card.className='kanban-card';card.dataset.id=task.id;card.dataset.type='task';
+      const card=document.createElement('div');card.className='kanban-card';card.dataset.id=task.id;
+      // Subtask pills html
+      let pillsHtml='';
+      if(taskSubs.length){
+        pillsHtml='<div class="subtask-pills">'+taskSubs.map(s=>{
+          const isDone=s.status==='done';
+          return`<div class="subtask-pill">
+            <span class="subtask-pill-title">${s.title}</span>
+            <span class="subtask-pill-status ${isDone?'pill-done':'pill-open'}">${isDone?'✓ Erledigt':'Offen'}</span>
+            ${isAdmin?`<button class="subtask-pill-toggle" data-id="${s.id}" data-done="${isDone?'1':'0'}" title="Status wechseln">⇄</button>`:''}
+          </div>`;
+        }).join('')+'</div>';
+      }
       card.innerHTML=`
         ${epic?`<div class="card-epic-badge" style="background:${epicColor}">${epic.title}</div>`:''}
         <div class="card-title">${task.title}</div>
@@ -717,101 +671,47 @@ function renderKanban(){
           ${task.start_date?`<span>📅 ${fmtDate(task.start_date)}</span>`:''}
           ${task.end_date?`<span>🏁 ${fmtDate(task.end_date)}</span>`:''}
           ${task.estimated_hours?`<span>⏱ ${task.estimated_hours}h</span>`:''}
-          ${taskSubs.length?`<span>📎 ${taskSubs.filter(s=>s.status==='done').length}/${taskSubs.length} Unteraufgaben</span>`:''}
         </div>
         ${progressBarHTML(task.estimated_hours,task.logged_hours,epicColor)}
+        ${pillsHtml}
         ${isAdmin?`<div class="card-actions"><button class="card-edit" data-id="${task.id}">✏️</button><button class="card-del" data-id="${task.id}">🗑️</button></div>`:''}
       `;
-      group.appendChild(card);
-      // Subtask cards (indented, smaller)
-      taskSubs.filter(s=>s.status===status).forEach(sub=>{
-        const sc=document.createElement('div');sc.className='kanban-subtask-card';sc.dataset.id=sub.id;sc.dataset.type='subtask';sc.dataset.taskId=task.id;
-        sc.innerHTML=`
-          <div class="subtask-parent-label">↳ ${task.title}</div>
-          <div class="card-title" style="font-size:.85rem;">${sub.title}</div>
-          <div class="card-meta">
-            ${sub.start_date?`<span>📅 ${fmtDate(sub.start_date)}</span>`:''}
-            ${sub.estimated_hours?`<span>⏱ ${sub.estimated_hours}h</span>`:''}
-          </div>
-          ${progressBarHTML(sub.estimated_hours,sub.logged_hours,'#7B9EA6')}
-          ${isAdmin?`<div class="card-actions"><button class="sub-card-edit" data-id="${sub.id}">✏️</button><button class="sub-card-del" data-id="${sub.id}">🗑️</button></div>`:''}
-        `;
-        group.appendChild(sc);
-      });
-      container.appendChild(group);
+      container.appendChild(card);
     });
     const key=status==='in_progress'?'inprogress':status;
-    document.getElementById('cnt-'+key).textContent=colTasks.length;
+    document.getElementById('cnt-'+key).textContent=tasks.filter(t=>t.status===status).length;
   });
 
   if(isAdmin){
-    // Drag for task cards
     ['backlog','todo','in_progress','done'].forEach(status=>{
-      const el=document.getElementById('kanban-'+status);
-      Sortable.create(el,{
-        group:'kanban-tasks',animation:150,ghostClass:'sortable-ghost',
-        draggable:'.kanban-card',
-        onEnd:async(evt)=>{
-          const taskId=evt.item.dataset.id;
-          const newStatus=evt.to.dataset.status;
-          if(!taskId||evt.item.dataset.type!=='task')return;
-          await handleTaskStatusChange(taskId,newStatus);
-        }
-      });
-      // Drag for subtask cards
-      Sortable.create(el,{
-        group:'kanban-subtasks',animation:150,ghostClass:'sortable-ghost',
-        draggable:'.kanban-subtask-card',
-        onEnd:async(evt)=>{
-          const subId=evt.item.dataset.id;
-          const newStatus=evt.to.dataset.status;
-          if(!subId)return;
-          await handleSubtaskStatusChange(subId,newStatus,evt.item.dataset.taskId);
+      Sortable.create(document.getElementById('kanban-'+status),{
+        group:'kanban',animation:150,ghostClass:'sortable-ghost',
+        onEnd:async evt=>{
+          const id=evt.item.dataset.id,newStatus=evt.to.dataset.status;
+          await sb.from('tasks').update({status:newStatus}).eq('id',id);
+          toast('Status aktualisiert');await loadAll();
         }
       });
     });
-    document.querySelectorAll('.card-edit').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openTaskModal(btn.dataset.id);});});
-    document.querySelectorAll('.card-del').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();deleteTask(btn.dataset.id);});});
-    document.querySelectorAll('.sub-card-edit').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openSubtaskModal(btn.dataset.id);});});
-    document.querySelectorAll('.sub-card-del').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();deleteSubtask(btn.dataset.id);});});
+    document.querySelectorAll('.card-edit').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openTaskModal(b.dataset.id);}));
+    document.querySelectorAll('.card-del').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();deleteTask(b.dataset.id);}));
+    // Subtask pill toggle
+    document.querySelectorAll('.subtask-pill-toggle').forEach(b=>{
+      b.addEventListener('click',async e=>{
+        e.stopPropagation();
+        const isDone=b.dataset.done==='1';
+        const newStatus=isDone?'open':'done';
+        await sb.from('subtasks').update({status:newStatus}).eq('id',b.dataset.id);
+        toast('Unteraufgabe aktualisiert');await loadAll();
+      });
+    });
   }
 }
 
-async function handleTaskStatusChange(taskId,newStatus){
-  await sb.from('tasks').update({status:newStatus}).eq('id',taskId);
-  // If moving to in_progress, set all subtasks to in_progress
-  if(newStatus==='in_progress'){
-    const subs=subtasks.filter(s=>s.task_id===taskId);
-    if(subs.length) await sb.from('subtasks').update({status:'in_progress'}).eq('task_id',taskId);
-  }
-  toast('Status aktualisiert');
-  await loadAll();
-}
+// ── COLLAPSE ALL ──
+document.getElementById('btn-collapse-all').addEventListener('click',()=>{openEpicIds.clear();openTaskIds.clear();openSubtaskIds.clear();renderEpics();toast('Alles eingeklappt');});
 
-async function handleSubtaskStatusChange(subId,newStatus,taskId){
-  await sb.from('subtasks').update({status:newStatus}).eq('id',subId);
-  // Check if all subtasks are done -> set task to done
-  const allSubs=subtasks.map(s=>s.id===subId?{...s,status:newStatus}:s).filter(s=>s.task_id===taskId);
-  if(allSubs.length&&allSubs.every(s=>s.status==='done')){
-    await sb.from('tasks').update({status:'done'}).eq('id',taskId);
-    toast('Alle Unteraufgaben erledigt – Aufgabe auf Abgeschlossen gesetzt ✓');
-  } else {
-    toast('Status aktualisiert');
-  }
-  await loadAll();
-}
-
-// ══════════════════════════════════════════
-// COLLAPSE ALL
-// ══════════════════════════════════════════
-document.getElementById('btn-collapse-all').addEventListener('click',()=>{
-  openEpicIds.clear();openTaskIds.clear();openSubtaskIds.clear();
-  renderEpics();toast('Alles eingeklappt');
-});
-
-// ══════════════════════════════════════════
-// EPICS VIEW
-// ══════════════════════════════════════════
+// ── EPICS VIEW ──
 function renderEpics(){
   const container=document.getElementById('epics-list');container.innerHTML='';
   if(!epics.length){container.innerHTML='<p style="color:#aaa;text-align:center;margin-top:40px;">Noch keine Epics vorhanden.</p>';return;}
@@ -837,55 +737,48 @@ function renderEpics(){
       </div>
       <div class="epic-body ${openEpicIds.has(epic.id)?'open':''}" id="epic-body-${epic.id}">
         ${epic.description?`<div class="epic-description">${epic.description}</div>`:''}
-        <div class="tasks-list">${epicTasks.map(task=>renderTaskRow(task,epic)).join('')}</div>
+        <div class="tasks-list">${epicTasks.map(t=>renderTaskRow(t,epic)).join('')}</div>
         ${isAdmin?`<button class="add-task-btn" data-epic="${epic.id}">＋ Neue Aufgabe hinzufügen</button>`:''}
       </div>`;
     container.appendChild(div);
   });
-
   document.querySelectorAll('.epic-header').forEach(h=>{
-    h.addEventListener('click',(e)=>{
+    h.addEventListener('click',e=>{
       if(e.target.closest('.epic-actions'))return;
       const id=h.dataset.epic;
-      if(openEpicIds.has(id))openEpicIds.delete(id);else openEpicIds.add(id);
+      openEpicIds.has(id)?openEpicIds.delete(id):openEpicIds.add(id);
       document.getElementById('epic-body-'+id).classList.toggle('open');
       h.querySelector('.epic-chevron').classList.toggle('open');
     });
   });
   if(isAdmin){
-    document.querySelectorAll('.epic-edit').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openEpicModal(btn.dataset.id);});});
-    document.querySelectorAll('.epic-del').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();deleteEpic(btn.dataset.id);});});
-    document.querySelectorAll('.epic-add-task,.add-task-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openTaskModal(null,btn.dataset.id||btn.dataset.epic);});});
-    document.querySelectorAll('.task-edit-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openTaskModal(btn.dataset.id);});});
-    document.querySelectorAll('.task-del-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();deleteTask(btn.dataset.id);});});
-    document.querySelectorAll('.add-subtask-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openSubtaskModal(null,btn.dataset.task);});});
-    document.querySelectorAll('.subtask-edit-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openSubtaskModal(btn.dataset.id);});});
-    document.querySelectorAll('.subtask-del-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();deleteSubtask(btn.dataset.id);});});
+    document.querySelectorAll('.epic-edit').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openEpicModal(b.dataset.id);}));
+    document.querySelectorAll('.epic-del').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();deleteEpic(b.dataset.id);}));
+    document.querySelectorAll('.epic-add-task,.add-task-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openTaskModal(null,b.dataset.id||b.dataset.epic);}));
+    document.querySelectorAll('.task-edit-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openTaskModal(b.dataset.id);}));
+    document.querySelectorAll('.task-del-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();deleteTask(b.dataset.id);}));
+    document.querySelectorAll('.add-subtask-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openSubtaskModal(null,b.dataset.task);}));
+    document.querySelectorAll('.subtask-edit-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openSubtaskModal(b.dataset.id);}));
+    document.querySelectorAll('.subtask-del-btn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();deleteSubtask(b.dataset.id);}));
   }
   document.querySelectorAll('.task-row-header').forEach(h=>{
-    h.addEventListener('click',(e)=>{
+    h.addEventListener('click',e=>{
       if(e.target.closest('.task-row-right'))return;
-      const id=h.dataset.task;
-      if(openTaskIds.has(id))openTaskIds.delete(id);else openTaskIds.add(id);
+      const id=h.dataset.task;openTaskIds.has(id)?openTaskIds.delete(id):openTaskIds.add(id);
       document.getElementById('task-body-'+id)?.classList.toggle('open');
       h.querySelector('.task-chevron')?.classList.toggle('open');
     });
   });
   document.querySelectorAll('.subtask-header').forEach(h=>{
-    h.addEventListener('click',(e)=>{
+    h.addEventListener('click',e=>{
       if(e.target.closest('.subtask-right'))return;
-      const id=h.dataset.subtask;
-      if(openSubtaskIds.has(id))openSubtaskIds.delete(id);else openSubtaskIds.add(id);
+      const id=h.dataset.subtask;openSubtaskIds.has(id)?openSubtaskIds.delete(id):openSubtaskIds.add(id);
       document.getElementById('subtask-body-'+id)?.classList.toggle('open');
     });
   });
-  document.querySelectorAll('.comment-send-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>sendComment(btn.dataset.task||null,btn.dataset.subtask||null,btn));
-  });
+  document.querySelectorAll('.comment-send-btn').forEach(b=>b.addEventListener('click',()=>sendComment(b.dataset.task||null,b.dataset.subtask||null,b)));
   document.querySelectorAll('.comment-input').forEach(inp=>{
-    inp.addEventListener('keydown',e=>{
-      if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const btn=inp.nextElementSibling;sendComment(btn.dataset.task||null,btn.dataset.subtask||null,btn);}
-    });
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const b=inp.nextElementSibling;sendComment(b.dataset.task||null,b.dataset.subtask||null,b);}});
   });
 }
 
@@ -926,13 +819,13 @@ function renderTaskRow(task,epic){
 
 function renderSubtaskRow(s){
   const isOpen=openSubtaskIds.has(s.id);
-  const parentTask=tasks.find(t=>t.id===s.task_id);
+  const isDone=s.status==='done';
   return`<div class="subtask-row">
     <div class="subtask-header" data-subtask="${s.id}">
       <div style="display:flex;align-items:center;gap:8px;">
         <span style="color:#aaa;font-size:.8rem;">↳</span>
         <span class="subtask-title">${s.title}</span>
-        <span class="status-badge status-${s.status}">${statusLabel(s.status)}</span>
+        <span class="${isDone?'sub-status-done':'sub-status-open'}">${isDone?'✓ Abgeschlossen':'Offen'}</span>
       </div>
       <div class="subtask-right">
         ${s.start_date?`<span style="font-size:.75rem;color:#888;">📅 ${fmtDate(s.start_date)} – ${fmtDate(s.end_date)}</span>`:''}
@@ -953,117 +846,82 @@ function renderSubtaskRow(s){
   </div>`;
 }
 
-// ══════════════════════════════════════════
-// SUBTASK AUTO-STATUS on new subtask creation
-// (handled in btn-save-subtask)
-// ══════════════════════════════════════════
-
-// ══════════════════════════════════════════
-// COMMENTS
-// ══════════════════════════════════════════
+// ── COMMENTS ──
 function renderComments(taskId,subtaskId){
-  const relevant=comments.filter(c=>taskId?c.task_id===taskId&&!c.subtask_id:c.subtask_id===subtaskId);
-  const idAttr=taskId?`data-task="${taskId}"`:`data-subtask="${subtaskId}"`;
+  const rel=comments.filter(c=>taskId?c.task_id===taskId&&!c.subtask_id:c.subtask_id===subtaskId);
+  const attr=taskId?`data-task="${taskId}"`:`data-subtask="${subtaskId}"`;
   return`<div class="comments-section">
-    <h4>Kommentare (${relevant.length})</h4>
-    <div class="comments-list">${relevant.map(c=>{
-      const mine=isAdmin?(c.user_label==='Admin'):(c.user_label==='Gast');
+    <h4>Kommentare (${rel.length})</h4>
+    <div class="comments-list">${rel.map(c=>{
+      const mine=isAdmin?c.user_label==='Admin':c.user_label==='Gast';
       return`<div class="comment-item ${mine?'mine':'theirs'}">
         <div class="comment-bubble">${c.content}</div>
         <div class="comment-meta">${c.user_label} · ${fmtDateTime(c.created_at)}</div>
       </div>`;
     }).join('')}</div>
     <div class="comment-input-row">
-      <input type="text" class="comment-input" placeholder="Kommentar schreiben..." ${idAttr}/>
-      <button class="comment-send-btn" ${idAttr}>Senden</button>
+      <input type="text" class="comment-input" placeholder="Kommentar schreiben..." ${attr}/>
+      <button class="comment-send-btn" ${attr}>Senden</button>
     </div>
   </div>`;
 }
 async function sendComment(taskId,subtaskId,btn){
-  const row=btn.closest('.comment-input-row');
-  const inp=row.querySelector('.comment-input');
+  const inp=btn.closest('.comment-input-row').querySelector('.comment-input');
   const content=inp.value.trim();if(!content)return;
   const label=isAdmin?'Admin':'Gast';
   await sb.from('comments').insert({task_id:taskId||null,subtask_id:subtaskId||null,user_email:currentUser.email,user_label:label,content});
   inp.value='';
-  const forRole=isAdmin?'guest':'admin';
   const task=taskId?tasks.find(t=>t.id===taskId):tasks.find(t=>subtasks.find(s=>s.id===subtaskId&&s.task_id===t.id));
   const subtask=subtaskId?subtasks.find(s=>s.id===subtaskId):null;
-  await sb.from('notifications').insert({for_role:forRole,task_id:task?.id||null,subtask_id:subtaskId||null,task_title:task?.title||'',subtask_title:subtask?.title||null,comment_preview:content.length>50?content.substring(0,50)+'...':content,from_label:label,is_read:false});
+  await sb.from('notifications').insert({for_role:isAdmin?'guest':'admin',task_id:task?.id||null,subtask_id:subtaskId||null,task_title:task?.title||'',subtask_title:subtask?.title||null,comment_preview:content.length>50?content.slice(0,50)+'...':content,from_label:label,is_read:false});
   await loadAll();
 }
 
-// ══════════════════════════════════════════
-// MODALS
-// ══════════════════════════════════════════
+// ── MODALS ──
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('[data-close]').forEach(btn=>{btn.addEventListener('click',()=>closeModal(btn.dataset.close));});
-document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);});});
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);}));
 
 // EPIC
 function openEpicModal(id=null){
-  editingEpicId=id;
-  document.getElementById('modal-epic-title').textContent=id?'Epic bearbeiten':'Neues Epic';
+  editingEpicId=id;document.getElementById('modal-epic-title').textContent=id?'Epic bearbeiten':'Neues Epic';
   const color=id?epics.find(e=>e.id===id)?.bar_color||'#00F0A4':'#00F0A4';
   document.getElementById('epic-color').value=color;
-  if(id){const epic=epics.find(e=>e.id===id);document.getElementById('epic-title').value=epic.title;document.getElementById('epic-desc').value=epic.description||'';}
+  if(id){const e=epics.find(x=>x.id===id);document.getElementById('epic-title').value=e.title;document.getElementById('epic-desc').value=e.description||'';}
   else{document.getElementById('epic-title').value='';document.getElementById('epic-desc').value='';}
   buildPalette('epic-color-palette','epic-color',color);openModal('modal-epic');
 }
 document.getElementById('btn-add-epic').addEventListener('click',()=>openEpicModal());
 document.getElementById('btn-save-epic').addEventListener('click',async()=>{
   const title=document.getElementById('epic-title').value.trim();
-  if(!title){toast('Bitte einen Titel eingeben.','error');return;}
-  const payload={title,description:document.getElementById('epic-desc').value.trim(),bar_color:document.getElementById('epic-color').value};
-  if(editingEpicId){await sb.from('epics').update(payload).eq('id',editingEpicId);toast('Epic aktualisiert ✓');}
-  else{await sb.from('epics').insert(payload);toast('Epic erstellt ✓');}
+  if(!title){toast('Bitte Titel eingeben.','error');return;}
+  const p={title,description:document.getElementById('epic-desc').value.trim(),bar_color:document.getElementById('epic-color').value};
+  if(editingEpicId){await sb.from('epics').update(p).eq('id',editingEpicId);toast('Epic aktualisiert ✓');}
+  else{await sb.from('epics').insert(p);toast('Epic erstellt ✓');}
   closeModal('modal-epic');loadAll();
 });
 
 // TASK
 function openTaskModal(id=null,epicId=null){
-  editingTaskId=id;
-  document.getElementById('modal-task-title').textContent=id?'Aufgabe bearbeiten':'Neue Aufgabe';
-  const sel=document.getElementById('task-epic');
-  sel.innerHTML=epics.map(e=>`<option value="${e.id}">${e.title}</option>`).join('');
-  if(id){
-    const t=tasks.find(x=>x.id===id);sel.value=t.epic_id;
-    document.getElementById('task-title').value=t.title;document.getElementById('task-desc').value=t.description||'';
-    document.getElementById('task-start').value=t.start_date||'';document.getElementById('task-end').value=t.end_date||'';
-    document.getElementById('task-est').value=t.estimated_hours||'';document.getElementById('task-logged').value=t.logged_hours||'';
-    document.getElementById('task-status').value=t.status;
-  }else{
-    if(epicId)sel.value=epicId;
-    ['task-title','task-desc','task-start','task-end','task-est','task-logged'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('task-status').value='backlog';
-  }
-  updateTaskLoggedVisibility();openModal('modal-task');
+  editingTaskId=id;document.getElementById('modal-task-title').textContent=id?'Aufgabe bearbeiten':'Neue Aufgabe';
+  const sel=document.getElementById('task-epic');sel.innerHTML=epics.map(e=>`<option value="${e.id}">${e.title}</option>`).join('');
+  if(id){const t=tasks.find(x=>x.id===id);sel.value=t.epic_id;document.getElementById('task-title').value=t.title;document.getElementById('task-desc').value=t.description||'';document.getElementById('task-start').value=t.start_date||'';document.getElementById('task-end').value=t.end_date||'';document.getElementById('task-est').value=t.estimated_hours||'';document.getElementById('task-logged').value=t.logged_hours||'';document.getElementById('task-status').value=t.status;}
+  else{if(epicId)sel.value=epicId;['task-title','task-desc','task-start','task-end','task-est','task-logged'].forEach(i=>document.getElementById(i).value='');document.getElementById('task-status').value='backlog';}
+  updateTaskLogged();openModal('modal-task');
 }
-function updateTaskLoggedVisibility(){const est=document.getElementById('task-est').value;document.getElementById('task-logged-group').style.opacity=est?'1':'0.4';document.getElementById('task-logged').disabled=!est;}
-document.getElementById('task-est').addEventListener('input',updateTaskLoggedVisibility);
+function updateTaskLogged(){const e=document.getElementById('task-est').value;document.getElementById('task-logged-group').style.opacity=e?'1':'0.4';document.getElementById('task-logged').disabled=!e;}
+document.getElementById('task-est').addEventListener('input',updateTaskLogged);
 document.getElementById('btn-add-task-kanban').addEventListener('click',()=>openTaskModal());
 document.getElementById('btn-save-task').addEventListener('click',async()=>{
-  const title=document.getElementById('task-title').value.trim();
-  const epicId=document.getElementById('task-epic').value;
-  if(!title){toast('Bitte einen Titel eingeben.','error');return;}
-  const start=document.getElementById('task-start').value,end=document.getElementById('task-end').value;
-  if(start&&end&&end<start){toast('Enddatum liegt vor dem Startdatum!','error');return;}
-  const est=document.getElementById('task-est').value;
-  const logged=est?document.getElementById('task-logged').value:'0';
-  const newStatus=document.getElementById('task-status').value;
-  const payload={epic_id:epicId,title,description:document.getElementById('task-desc').value.trim(),start_date:start||null,end_date:end||null,estimated_hours:est?parseFloat(est):null,logged_hours:logged?parseFloat(logged):0,status:newStatus};
-  if(editingTaskId){
-    const oldTask=tasks.find(t=>t.id===editingTaskId);
-    await sb.from('tasks').update(payload).eq('id',editingTaskId);
-    // If new subtask added to done task, revert task to in_progress
-    if(oldTask?.status==='done'&&newStatus==='done'){
-      // keep done
-    }
-    toast('Aufgabe aktualisiert ✓');
-  }else{
-    await sb.from('tasks').insert(payload);toast('Aufgabe erstellt ✓');
-  }
+  const title=document.getElementById('task-title').value.trim(),epicId=document.getElementById('task-epic').value;
+  if(!title){toast('Bitte Titel eingeben.','error');return;}
+  const s=document.getElementById('task-start').value,e=document.getElementById('task-end').value;
+  if(s&&e&&e<s){toast('Enddatum vor Startdatum!','error');return;}
+  const est=document.getElementById('task-est').value,logged=est?document.getElementById('task-logged').value:'0';
+  const p={epic_id:epicId,title,description:document.getElementById('task-desc').value.trim(),start_date:s||null,end_date:e||null,estimated_hours:est?parseFloat(est):null,logged_hours:logged?parseFloat(logged):0,status:document.getElementById('task-status').value};
+  if(editingTaskId){await sb.from('tasks').update(p).eq('id',editingTaskId);toast('Aufgabe aktualisiert ✓');}
+  else{await sb.from('tasks').insert(p);toast('Aufgabe erstellt ✓');}
   closeModal('modal-task');loadAll();
 });
 
@@ -1072,390 +930,217 @@ function openSubtaskModal(id=null,taskId=null){
   editingSubtaskId=id;currentSubtaskParentId=taskId;
   document.getElementById('modal-subtask-title').textContent=id?'Unteraufgabe bearbeiten':'Neue Unteraufgabe';
   let parentTask=null;
-  if(id){
-    const s=subtasks.find(x=>x.id===id);parentTask=tasks.find(t=>t.id===s.task_id);currentSubtaskParentId=s.task_id;
-    document.getElementById('subtask-title').value=s.title;document.getElementById('subtask-desc').value=s.description||'';
-    document.getElementById('subtask-start').value=s.start_date||'';document.getElementById('subtask-end').value=s.end_date||'';
-    document.getElementById('subtask-est').value=s.estimated_hours||'';document.getElementById('subtask-logged').value=s.logged_hours||'';
-    document.getElementById('subtask-status').value=s.status;
-  }else{
-    parentTask=tasks.find(t=>t.id===taskId);
-    ['subtask-title','subtask-desc','subtask-est','subtask-logged'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('subtask-start').value=parentTask?.start_date||'';
-    document.getElementById('subtask-end').value=parentTask?.end_date||'';
-    document.getElementById('subtask-status').value='backlog';
-  }
-  if(parentTask){
-    if(parentTask.start_date){document.getElementById('subtask-start').min=parentTask.start_date;document.getElementById('subtask-end').min=parentTask.start_date;}
-    if(parentTask.end_date){document.getElementById('subtask-start').max=parentTask.end_date;document.getElementById('subtask-end').max=parentTask.end_date;}
-  }
-  updateSubtaskLoggedVisibility();openModal('modal-subtask');
+  if(id){const s=subtasks.find(x=>x.id===id);parentTask=tasks.find(t=>t.id===s.task_id);currentSubtaskParentId=s.task_id;document.getElementById('subtask-title').value=s.title;document.getElementById('subtask-desc').value=s.description||'';document.getElementById('subtask-start').value=s.start_date||'';document.getElementById('subtask-end').value=s.end_date||'';document.getElementById('subtask-est').value=s.estimated_hours||'';document.getElementById('subtask-logged').value=s.logged_hours||'';document.getElementById('subtask-status').value=s.status||'open';}
+  else{parentTask=tasks.find(t=>t.id===taskId);['subtask-title','subtask-desc','subtask-est','subtask-logged'].forEach(i=>document.getElementById(i).value='');document.getElementById('subtask-start').value=parentTask?.start_date||'';document.getElementById('subtask-end').value=parentTask?.end_date||'';document.getElementById('subtask-status').value='open';}
+  if(parentTask){if(parentTask.start_date){document.getElementById('subtask-start').min=parentTask.start_date;document.getElementById('subtask-end').min=parentTask.start_date;}if(parentTask.end_date){document.getElementById('subtask-start').max=parentTask.end_date;document.getElementById('subtask-end').max=parentTask.end_date;}}
+  updateSubtaskLogged();openModal('modal-subtask');
 }
-function updateSubtaskLoggedVisibility(){const est=document.getElementById('subtask-est').value;document.getElementById('subtask-logged-group').style.opacity=est?'1':'0.4';document.getElementById('subtask-logged').disabled=!est;}
-document.getElementById('subtask-est').addEventListener('input',updateSubtaskLoggedVisibility);
+function updateSubtaskLogged(){const e=document.getElementById('subtask-est').value;document.getElementById('subtask-logged-group').style.opacity=e?'1':'0.4';document.getElementById('subtask-logged').disabled=!e;}
+document.getElementById('subtask-est').addEventListener('input',updateSubtaskLogged);
 document.getElementById('btn-save-subtask').addEventListener('click',async()=>{
-  const title=document.getElementById('subtask-title').value.trim();
-  if(!title){toast('Bitte einen Titel eingeben.','error');return;}
-  const start=document.getElementById('subtask-start').value,end=document.getElementById('subtask-end').value;
-  const parentTask=tasks.find(t=>t.id===currentSubtaskParentId);
-  if(parentTask){
-    if(parentTask.start_date&&start&&start<parentTask.start_date){toast('Startdatum liegt vor dem der übergeordneten Aufgabe!','error');return;}
-    if(parentTask.end_date&&end&&end>parentTask.end_date){toast('Enddatum liegt nach dem der übergeordneten Aufgabe!','error');return;}
-  }
-  if(start&&end&&end<start){toast('Enddatum liegt vor dem Startdatum!','error');return;}
-  const est=document.getElementById('subtask-est').value;
-  const logged=est?document.getElementById('subtask-logged').value:'0';
-  const payload={task_id:currentSubtaskParentId,title,description:document.getElementById('subtask-desc').value.trim(),start_date:start||null,end_date:end||null,estimated_hours:est?parseFloat(est):null,logged_hours:logged?parseFloat(logged):0,status:document.getElementById('subtask-status').value};
-  if(editingSubtaskId){
-    await sb.from('subtasks').update(payload).eq('id',editingSubtaskId);toast('Unteraufgabe aktualisiert ✓');
-  }else{
-    await sb.from('subtasks').insert(payload);
-    // If parent task is done, revert to in_progress
-    if(parentTask&&parentTask.status==='done'){
-      await sb.from('tasks').update({status:'in_progress'}).eq('id',currentSubtaskParentId);
-      toast('Neue Unteraufgabe erstellt – Aufgabe wieder auf In Arbeit gesetzt ✓');
-    }else toast('Unteraufgabe erstellt ✓');
-  }
+  const title=document.getElementById('subtask-title').value.trim();if(!title){toast('Bitte Titel eingeben.','error');return;}
+  const s=document.getElementById('subtask-start').value,e=document.getElementById('subtask-end').value;
+  const pt=tasks.find(t=>t.id===currentSubtaskParentId);
+  if(pt){if(pt.start_date&&s&&s<pt.start_date){toast('Startdatum vor übergeordneter Aufgabe!','error');return;}if(pt.end_date&&e&&e>pt.end_date){toast('Enddatum nach übergeordneter Aufgabe!','error');return;}}
+  if(s&&e&&e<s){toast('Enddatum vor Startdatum!','error');return;}
+  const est=document.getElementById('subtask-est').value,logged=est?document.getElementById('subtask-logged').value:'0';
+  const p={task_id:currentSubtaskParentId,title,description:document.getElementById('subtask-desc').value.trim(),start_date:s||null,end_date:e||null,estimated_hours:est?parseFloat(est):null,logged_hours:logged?parseFloat(logged):0,status:document.getElementById('subtask-status').value};
+  if(editingSubtaskId){await sb.from('subtasks').update(p).eq('id',editingSubtaskId);toast('Unteraufgabe aktualisiert ✓');}
+  else{await sb.from('subtasks').insert(p);toast('Unteraufgabe erstellt ✓');}
   closeModal('modal-subtask');loadAll();
 });
 
-// RECURRING
+// ── DELETE ──
+async function deleteEpic(id){if(!await showConfirm('Epic löschen?','Alle Aufgaben werden ebenfalls gelöscht!'))return;await sb.from('epics').delete().eq('id',id);openEpicIds.delete(id);toast('Epic gelöscht');loadAll();}
+async function deleteTask(id){if(!await showConfirm('Aufgabe löschen?','Alle Unteraufgaben werden ebenfalls gelöscht!'))return;await sb.from('tasks').delete().eq('id',id);openTaskIds.delete(id);toast('Aufgabe gelöscht');loadAll();}
+async function deleteSubtask(id){if(!await showConfirm('Unteraufgabe löschen?','Kann nicht rückgängig gemacht werden.'))return;await sb.from('subtasks').delete().eq('id',id);openSubtaskIds.delete(id);toast('Unteraufgabe gelöscht');loadAll();}
+document.getElementById('btn-clear-done').addEventListener('click',async()=>{
+  const done=tasks.filter(t=>t.status==='done');if(!done.length){toast('Keine abgeschlossenen Aufgaben.','error');return;}
+  if(!await showConfirm('Abgeschlossen leeren?',`${done.length} Aufgabe(n) unwiderruflich löschen?`))return;
+  await sb.from('tasks').delete().in('id',done.map(t=>t.id));toast(`${done.length} Aufgabe(n) gelöscht 🗑️`);loadAll();
+});
+
+// ── RECURRING MODAL ──
 document.getElementById('rec-type').addEventListener('change',function(){
   document.getElementById('rec-weekday-group').style.display=this.value==='weekly'?'block':'none';
   document.getElementById('rec-workday-group').style.display=this.value==='monthly_workday'?'block':'none';
   document.getElementById('rec-monthdate-group').style.display=this.value==='monthly_date'?'block':'none';
 });
 function openRecurringModal(id=null){
-  editingRecurringId=id;
-  document.getElementById('modal-recurring-title').textContent=id?'Wiederkehrende Aufgabe bearbeiten':'Neue wiederkehrende Aufgabe';
-  if(id){
-    const r=recurringTasks.find(x=>x.id===id);
-    document.getElementById('rec-title').value=r.title;document.getElementById('rec-desc').value=r.description||'';
-    document.getElementById('rec-type').value=r.recurrence_type;document.getElementById('rec-weekday').value=r.weekday??0;
-    document.getElementById('rec-month-workday').value=r.month_workday||'';document.getElementById('rec-month-date').value=r.month_date||'';
-    document.getElementById('rec-duration').value=r.duration_days||1;
-  }else{
-    ['rec-title','rec-desc','rec-month-workday','rec-month-date'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('rec-type').value='weekly';document.getElementById('rec-weekday').value='0';document.getElementById('rec-duration').value='1';
-  }
+  editingRecurringId=id;document.getElementById('modal-recurring-title').textContent=id?'Bearbeiten':'Neue wiederkehrende Aufgabe';
+  if(id){const r=recurringTasks.find(x=>x.id===id);document.getElementById('rec-title').value=r.title;document.getElementById('rec-desc').value=r.description||'';document.getElementById('rec-type').value=r.recurrence_type;document.getElementById('rec-weekday').value=r.weekday??0;document.getElementById('rec-month-workday').value=r.month_workday||'';document.getElementById('rec-month-date').value=r.month_date||'';document.getElementById('rec-duration').value=r.duration_days||1;}
+  else{['rec-title','rec-desc','rec-month-workday','rec-month-date'].forEach(i=>document.getElementById(i).value='');document.getElementById('rec-type').value='weekly';document.getElementById('rec-weekday').value='0';document.getElementById('rec-duration').value='1';}
   document.getElementById('rec-type').dispatchEvent(new Event('change'));openModal('modal-recurring');
 }
 document.getElementById('btn-add-recurring').addEventListener('click',()=>openRecurringModal());
 document.getElementById('btn-save-recurring').addEventListener('click',async()=>{
-  const title=document.getElementById('rec-title').value.trim();
-  if(!title){toast('Bitte einen Titel eingeben.','error');return;}
-  const type=document.getElementById('rec-type').value;
-  const duration=parseInt(document.getElementById('rec-duration').value)||1;
-  const payload={title,description:document.getElementById('rec-desc').value.trim(),recurrence_type:type,weekday:type==='weekly'?parseInt(document.getElementById('rec-weekday').value):null,month_workday:type==='monthly_workday'?parseInt(document.getElementById('rec-month-workday').value):null,month_date:type==='monthly_date'?parseInt(document.getElementById('rec-month-date').value):null,duration_days:duration};
+  const title=document.getElementById('rec-title').value.trim();if(!title){toast('Bitte Titel eingeben.','error');return;}
+  const type=document.getElementById('rec-type').value,duration=parseInt(document.getElementById('rec-duration').value)||1;
+  const p={title,description:document.getElementById('rec-desc').value.trim(),recurrence_type:type,weekday:type==='weekly'?parseInt(document.getElementById('rec-weekday').value):null,month_workday:type==='monthly_workday'?parseInt(document.getElementById('rec-month-workday').value):null,month_date:type==='monthly_date'?parseInt(document.getElementById('rec-month-date').value):null,duration_days:duration};
   let recId=editingRecurringId;
-  if(editingRecurringId){
-    await sb.from('recurring_tasks').update(payload).eq('id',editingRecurringId);
-    await sb.from('recurring_instances').delete().eq('recurring_task_id',editingRecurringId);
-  }else{
-    const{data}=await sb.from('recurring_tasks').insert(payload).select();recId=data[0].id;
-  }
-  const instances=generateInstances({...payload,id:recId},duration);
+  if(editingRecurringId){await sb.from('recurring_tasks').update(p).eq('id',editingRecurringId);await sb.from('recurring_instances').delete().eq('recurring_task_id',editingRecurringId);}
+  else{const{data}=await sb.from('recurring_tasks').insert(p).select();recId=data[0].id;}
+  const instances=generateInstances({...p,id:recId},duration);
   if(instances.length)await sb.from('recurring_instances').insert(instances);
   await sb.from('recurring_tasks').update({generated_until:instances[instances.length-1]?.end_date}).eq('id',recId);
-  toast('Wiederkehrende Aufgabe gespeichert ✓');closeModal('modal-recurring');loadAll();
+  toast('Gespeichert ✓');closeModal('modal-recurring');loadAll();
 });
-
 function generateInstances(rec,duration){
-  const today=new Date();today.setHours(0,0,0,0);
-  const end3m=new Date(today);end3m.setMonth(end3m.getMonth()+3);
-  const instances=[];
+  const today=new Date();today.setHours(0,0,0,0);const end3m=new Date(today);end3m.setMonth(end3m.getMonth()+3);
+  const ins=[];
   if(rec.recurrence_type==='weekly'){
-    const targetDow=rec.weekday;
-    let cur=new Date(today);
-    const curDow=cur.getDay()===0?6:cur.getDay()-1;
-    let diff=(targetDow-curDow+7)%7;
-    cur.setDate(cur.getDate()+diff);
-    while(cur<=end3m){
-      const start=dateToStr(cur);const endD=new Date(cur);endD.setDate(endD.getDate()+duration-1);
-      instances.push({recurring_task_id:rec.id,start_date:start,end_date:dateToStr(endD)});
-      cur.setDate(cur.getDate()+7);
-    }
+    let cur=new Date(today);const curDow=cur.getDay()===0?6:cur.getDay()-1;let diff=(rec.weekday-curDow+7)%7;cur.setDate(cur.getDate()+diff);
+    while(cur<=end3m){const s=dateToStr(cur);const e=new Date(cur);e.setDate(e.getDate()+duration-1);ins.push({recurring_task_id:rec.id,start_date:s,end_date:dateToStr(e)});cur.setDate(cur.getDate()+7);}
   }else if(rec.recurrence_type==='monthly_workday'){
-    const wd=rec.month_workday||1;
-    for(let m=0;m<4;m++){
-      const base=new Date(today.getFullYear(),today.getMonth()+m,1);
-      let count=0;let d=new Date(base);
-      while(count<wd){const dow=d.getDay();if(dow!==0&&dow!==6)count++;if(count<wd)d.setDate(d.getDate()+1);}
-      if(d>=today&&d<=end3m){const endD=new Date(d);endD.setDate(endD.getDate()+duration-1);instances.push({recurring_task_id:rec.id,start_date:dateToStr(d),end_date:dateToStr(endD)});}
-    }
-  }else if(rec.recurrence_type==='monthly_date'){
-    const day=rec.month_date||1;
-    for(let m=0;m<4;m++){
-      const d=new Date(today.getFullYear(),today.getMonth()+m,day);
-      if(d>=today&&d<=end3m){const endD=new Date(d);endD.setDate(endD.getDate()+duration-1);instances.push({recurring_task_id:rec.id,start_date:dateToStr(d),end_date:dateToStr(endD)});}
-    }
-  }
-  return instances;
+    for(let m=0;m<4;m++){const base=new Date(today.getFullYear(),today.getMonth()+m,1);let count=0;let d=new Date(base);while(count<rec.month_workday){const dow=d.getDay();if(dow!==0&&dow!==6)count++;if(count<rec.month_workday)d.setDate(d.getDate()+1);}if(d>=today&&d<=end3m){const e=new Date(d);e.setDate(e.getDate()+duration-1);ins.push({recurring_task_id:rec.id,start_date:dateToStr(d),end_date:dateToStr(e)});}}
+  }else{for(let m=0;m<4;m++){const d=new Date(today.getFullYear(),today.getMonth()+m,rec.month_date||1);if(d>=today&&d<=end3m){const e=new Date(d);e.setDate(e.getDate()+duration-1);ins.push({recurring_task_id:rec.id,start_date:dateToStr(d),end_date:dateToStr(e)});}}}
+  return ins;
 }
-
 function renderRecurring(){
-  const container=document.getElementById('recurring-list');container.innerHTML='';
-  if(!recurringTasks.length){container.innerHTML='<p style="color:#aaa;text-align:center;margin-top:40px;">Noch keine wiederkehrenden Aufgaben vorhanden.</p>';return;}
+  const c=document.getElementById('recurring-list');c.innerHTML='';
+  if(!recurringTasks.length){c.innerHTML='<p style="color:#aaa;text-align:center;margin-top:40px;">Noch keine wiederkehrenden Aufgaben.</p>';return;}
   recurringTasks.forEach(r=>{
-    const instances=recurringInstances.filter(i=>i.recurring_task_id===r.id);
-    let recLabel='';
-    if(r.recurrence_type==='weekly')recLabel=`Jeden ${['Montag','Dienstag','Mittwoch','Donnerstag','Freitag'][r.weekday||0]}`;
-    else if(r.recurrence_type==='monthly_workday')recLabel=`${r.month_workday}. Arbeitstag des Monats`;
-    else recLabel=`Am ${r.month_date}. jeden Monats`;
+    const ins=recurringInstances.filter(i=>i.recurring_task_id===r.id);
+    const lbl=r.recurrence_type==='weekly'?`Jeden ${['Montag','Dienstag','Mittwoch','Donnerstag','Freitag'][r.weekday||0]}`:r.recurrence_type==='monthly_workday'?`${r.month_workday}. Arbeitstag`:`Am ${r.month_date}. des Monats`;
     const div=document.createElement('div');div.className='recurring-card';
-    div.innerHTML=`
-      <div class="recurring-card-header">
-        <div class="recurring-card-title">🔄 ${r.title}</div>
-        ${isAdmin?`<div class="recurring-card-actions">
-          <button class="btn-secondary rec-edit" data-id="${r.id}" style="font-size:.8rem;padding:5px 12px;">✏️ Bearbeiten</button>
-          <button class="btn-danger rec-del" data-id="${r.id}" style="font-size:.8rem;padding:5px 12px;">🗑️</button>
-        </div>`:''}
-      </div>
-      <div class="recurring-card-meta">📅 ${recLabel} · ⏱ ${r.duration_days} Tag${r.duration_days!==1?'e':''} · ${instances.length} Einträge generiert</div>
-      ${r.description?`<div style="font-size:.85rem;color:#666;">${r.description}</div>`:''}`;
-    container.appendChild(div);
+    div.innerHTML=`<div class="recurring-card-header"><div class="recurring-card-title">🔄 ${r.title}</div>${isAdmin?`<div style="display:flex;gap:8px;"><button class="btn-secondary rec-edit" data-id="${r.id}" style="font-size:.8rem;padding:5px 12px;">✏️</button><button class="btn-danger rec-del" data-id="${r.id}" style="font-size:.8rem;padding:5px 12px;">🗑️</button></div>`:''}</div><div class="recurring-card-meta">📅 ${lbl} · ⏱ ${r.duration_days} Tag${r.duration_days!==1?'e':''} · ${ins.length} generiert</div>${r.description?`<div style="font-size:.85rem;color:#666;">${r.description}</div>`:''}`;
+    c.appendChild(div);
   });
-  document.querySelectorAll('.rec-edit').forEach(btn=>{btn.addEventListener('click',()=>openRecurringModal(btn.dataset.id));});
-  document.querySelectorAll('.rec-del').forEach(btn=>{btn.addEventListener('click',async()=>{
-    const ok=await showConfirm('Wiederkehrende Aufgabe löschen?','Alle generierten Einträge werden ebenfalls gelöscht.');
-    if(!ok)return;await sb.from('recurring_tasks').delete().eq('id',btn.dataset.id);toast('Gelöscht');loadAll();
-  });});
+  document.querySelectorAll('.rec-edit').forEach(b=>b.addEventListener('click',()=>openRecurringModal(b.dataset.id)));
+  document.querySelectorAll('.rec-del').forEach(b=>b.addEventListener('click',async()=>{if(!await showConfirm('Löschen?','Alle generierten Einträge werden gelöscht.'))return;await sb.from('recurring_tasks').delete().eq('id',b.dataset.id);toast('Gelöscht');loadAll();}));
 }
 
-// ══════════════════════════════════════════
-// DELETE
-// ══════════════════════════════════════════
-async function deleteEpic(id){const ok=await showConfirm('Epic löschen?','Alle Aufgaben und Unteraufgaben werden ebenfalls gelöscht!');if(!ok)return;await sb.from('epics').delete().eq('id',id);openEpicIds.delete(id);toast('Epic gelöscht');loadAll();}
-async function deleteTask(id){const ok=await showConfirm('Aufgabe löschen?','Alle Unteraufgaben werden ebenfalls gelöscht!');if(!ok)return;await sb.from('tasks').delete().eq('id',id);openTaskIds.delete(id);toast('Aufgabe gelöscht');loadAll();}
-async function deleteSubtask(id){const ok=await showConfirm('Unteraufgabe löschen?','Diese Aktion kann nicht rückgängig gemacht werden.');if(!ok)return;await sb.from('subtasks').delete().eq('id',id);openSubtaskIds.delete(id);toast('Unteraufgabe gelöscht');loadAll();}
-document.getElementById('btn-clear-done').addEventListener('click',async()=>{
-  const doneTasks=tasks.filter(t=>t.status==='done');
-  if(!doneTasks.length){toast('Keine abgeschlossenen Aufgaben.','error');return;}
-  const ok=await showConfirm('Abgeschlossen leeren?',`${doneTasks.length} Aufgabe(n) werden unwiderruflich gelöscht!`);
-  if(!ok)return;await sb.from('tasks').delete().in('id',doneTasks.map(t=>t.id));toast(`${doneTasks.length} Aufgabe(n) gelöscht 🗑️`);loadAll();
-});
-
-// ══════════════════════════════════════════
-// TIMELINE
-// ══════════════════════════════════════════
-document.querySelectorAll('.tl-mode').forEach(btn=>{
-  btn.addEventListener('click',()=>{document.querySelectorAll('.tl-mode').forEach(b=>b.classList.remove('active'));btn.classList.add('active');tlMode=btn.dataset.mode;tlOffset=0;renderTimeline();});
-});
+// ── TIMELINE ──
+document.querySelectorAll('.tl-mode').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.tl-mode').forEach(x=>x.classList.remove('active'));b.classList.add('active');tlMode=b.dataset.mode;tlOffset=0;renderTimeline();});});
 document.getElementById('tl-prev').addEventListener('click',()=>{tlOffset--;renderTimeline();});
 document.getElementById('tl-next').addEventListener('click',()=>{tlOffset++;renderTimeline();});
 document.getElementById('tl-today').addEventListener('click',()=>{tlOffset=0;renderTimeline();});
 
 function getTimelineDays(){
   const today=new Date();today.setHours(0,0,0,0);
-  let days=[];
   if(tlMode==='week'){
     const dow=today.getDay()===0?6:today.getDay()-1;
-    const monday=new Date(today);monday.setDate(today.getDate()-dow+tlOffset*7);
-    for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);days.push(d);}
+    const mon=new Date(today);mon.setDate(today.getDate()-dow+tlOffset*7);
+    return Array.from({length:7},(_,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);return d;});
   }else{
     const ref=new Date(today.getFullYear(),today.getMonth()+tlOffset,1);
     const dim=new Date(ref.getFullYear(),ref.getMonth()+1,0).getDate();
-    for(let i=1;i<=dim;i++)days.push(new Date(ref.getFullYear(),ref.getMonth(),i));
+    return Array.from({length:dim},(_,i)=>new Date(ref.getFullYear(),ref.getMonth(),i+1));
   }
-  return days;
 }
-function dateToStr(d){return d.toISOString().split('T')[0];}
 
 function renderTimeline(){
   const days=getTimelineDays();
   const todayStr=dateToStr(new Date());
-  const start=days[0],end=days[days.length-1];
+  const s=days[0],e=days[days.length-1];
   document.getElementById('tl-period').textContent=tlMode==='week'
-    ?`${start.toLocaleDateString('de-DE',{day:'2-digit',month:'short'})} – ${end.toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric'})}`
-    :start.toLocaleDateString('de-DE',{month:'long',year:'numeric'});
+    ?`${s.toLocaleDateString('de-DE',{day:'2-digit',month:'short'})} – ${e.toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric'})}`
+    :s.toLocaleDateString('de-DE',{month:'long',year:'numeric'});
 
   const dayNames=['So','Mo','Di','Mi','Do','Fr','Sa'];
-  const colW=tlMode==='week'?80:36;
-  const container=document.getElementById('timeline-container');
+  const colW=tlMode==='week'?80:34;
+  const labelW=240;
 
-  let html=`<table class="timeline-table"><colgroup>
-    <col style="width:240px;min-width:200px;">
-    ${days.map(()=>`<col style="width:${colW}px;min-width:${colW}px;">`).join('')}
-  </colgroup><thead><tr>
-    <th class="timeline-label-col">Aufgabe</th>
-    ${days.map(d=>{const ds=dateToStr(d);const isToday=ds===todayStr;return`<th class="${isToday?'today-col':''}">${dayNames[d.getDay()]}<br/><span style="font-size:.8em">${d.getDate()}</span></th>`;}).join('')}
-  </tr></thead><tbody>`;
+  // Build header
+  let html=`<table class="tl-table"><colgroup><col style="width:${labelW}px;min-width:${labelW}px;">${days.map(()=>`<col style="width:${colW}px;min-width:${colW}px;">`).join('')}</colgroup>`;
+  html+=`<thead><tr><th class="tl-label-th">Aufgabe</th>${days.map(d=>{const ds=dateToStr(d);return`<th class="${ds===todayStr?'today-col':''}" style="min-width:${colW}px;">${dayNames[d.getDay()]}<br><span style="font-size:.78em">${d.getDate()}</span></th>`;}).join('')}</tr></thead><tbody>`;
 
-  // Build bar row – returns array of TD strings
-  function buildBarCells(itemStart,itemEnd,color,label,est,logged,itemId,type){
-    if(!itemStart||!itemEnd)return days.map(d=>`<td class="${dateToStr(d)===todayStr?'today-col':''}"></td>`).join('');
-    const result=[];let i=0;
+  // Helper: build cells for a single bar
+  function barCells(iStart,iEnd,barHtml){
+    if(!iStart||!iEnd)return days.map(d=>`<td class="${dateToStr(d)===todayStr?'today-col':''}"></td>`).join('');
+    const out=[];let i=0;
     while(i<days.length){
       const ds=dateToStr(days[i]);
-      const isToday=ds===todayStr;
-      if(ds<itemStart||ds>itemEnd){result.push(`<td class="${isToday?'today-col':''}"></td>`);i++;continue;}
-      // First day of bar
-      let span=0;
-      for(let j=i;j<days.length&&dateToStr(days[j])<=itemEnd;j++)span++;
-      let fillPct=0;
-      if(est&&parseFloat(est)>0)fillPct=Math.min(100,Math.round((parseFloat(logged||0)/parseFloat(est))*100));
-      else fillPct=100;
-      const fillColor=est?(fillPct>80?'#e53e3e':fillPct>50?'#f59e0b':'rgba(0,0,0,0.18)'):'transparent';
-      const isRecurring=type==='recurring';
-      result.push(`<td class="tl-bar-cell ${isToday?'today-col':''}" colspan="${span}">
-        <div class="tl-bar${isRecurring?' tl-recurring-bar':''}"
-          data-id="${itemId}" data-type="${type}"
-          data-start="${itemStart}" data-end="${itemEnd}"
-          style="left:2px;right:2px;${isRecurring?'':'background:'+color+';'}"
-          title="${label}">
-          <div class="tl-bar-inner">
-            <div class="tl-bar-fill" style="width:${fillPct}%;background:${fillColor}"></div>
-          </div>
-          <span class="tl-bar-label">${label}</span>
-          ${isAdmin?`<div class="tl-resize-left" data-id="${itemId}" data-type="${type}" data-side="left"></div>
-          <div class="tl-resize-right" data-id="${itemId}" data-type="${type}" data-side="right"></div>`:''}
-        </div>
-      </td>`);
+      if(ds<iStart||ds>iEnd){out.push(`<td class="${ds===todayStr?'today-col':''}"></td>`);i++;continue;}
+      let span=0;for(let j=i;j<days.length&&dateToStr(days[j])<=iEnd;j++)span++;
+      out.push(`<td class="tl-bar-cell ${ds===todayStr?'today-col':''}" colspan="${span}">${barHtml}</td>`);
       i+=span;
     }
-    return result.join('');
+    return out.join('');
   }
 
-  // Filter: skip backlog items
+  // Task bar html: gray bg + epic color fill
+  function taskBarHtml(task,epicColor){
+    let fillPct=0;
+    if(task.estimated_hours&&parseFloat(task.estimated_hours)>0)
+      fillPct=Math.min(100,Math.round((parseFloat(task.logged_hours||0)/parseFloat(task.estimated_hours))*100));
+    else fillPct=0;
+    return`<div class="tl-bar">
+      <div class="tl-bar-task-bg"></div>
+      <div class="tl-bar-task-fill" style="width:${fillPct}%;background:${epicColor};"></div>
+      <span class="tl-bar-label dark-label">${task.title}</span>
+    </div>`;
+  }
+
+  // Subtask bar html
+  function subBarHtml(sub){
+    let fillPct=0;
+    if(sub.estimated_hours&&parseFloat(sub.estimated_hours)>0)
+      fillPct=Math.min(100,Math.round((parseFloat(sub.logged_hours||0)/parseFloat(sub.estimated_hours))*100));
+    return`<div class="tl-bar">
+      <div class="tl-bar-sub-bg"></div>
+      <div class="tl-bar-sub-fill" style="width:${fillPct}%;"></div>
+      <span class="tl-bar-label">${sub.title}</span>
+    </div>`;
+  }
+
+  // Recurring bar html
+  function recBarHtml(title){
+    return`<div class="tl-bar"><div class="tl-bar-rec"></div><span class="tl-bar-label dark-label">${title}</span></div>`;
+  }
+
   const visibleTasks=tasks.filter(t=>t.status!=='backlog');
-  const visibleSubtasks=subtasks.filter(s=>s.status!=='backlog');
+  const visibleSubs=subtasks.filter(s=>s.status!=='backlog'&&s.status!=='open'?false:true);
+  // Show all subtasks except those with no dates
+  const allVisibleSubs=subtasks.filter(s=>s.start_date&&s.end_date);
 
   epics.forEach(epic=>{
-    const epicTasks=visibleTasks.filter(t=>t.epic_id===epic.id);
+    const epicTasks=visibleTasks.filter(t=>t.epic_id===epic.id&&t.start_date&&t.end_date);
+    if(!epicTasks.length)return;
     const epicColor=epic.bar_color||'#00F0A4';
-    html+=`<tr class="tl-epic-row">
-      <td class="label-cell">📁 ${epic.title}</td>
-      ${days.map(d=>`<td class="${dateToStr(d)===todayStr?'today-col':''}"></td>`).join('')}
-    </tr>`;
+    html+=`<tr class="tl-epic-row"><td class="tl-label">📁 ${epic.title}</td>${days.map(d=>`<td class="${dateToStr(d)===todayStr?'today-col':''}"></td>`).join('')}</tr>`;
     epicTasks.forEach(task=>{
-      html+=`<tr class="tl-task-row">
-        <td class="label-cell">
-          <span class="status-badge status-${task.status}" style="font-size:.65rem;padding:1px 5px;">${statusLabel(task.status)}</span>
-          ${task.title}
-        </td>
-        ${buildBarCells(task.start_date,task.end_date,epicColor,task.title,task.estimated_hours,task.logged_hours,task.id,'task')}
-      </tr>`;
-      visibleSubtasks.filter(s=>s.task_id===task.id).forEach(sub=>{
-        html+=`<tr class="tl-subtask-row">
-          <td class="label-cell">↳ ${sub.title}</td>
-          ${buildBarCells(sub.start_date,sub.end_date,'#7B9EA6',sub.title,sub.estimated_hours,sub.logged_hours,sub.id,'subtask')}
-        </tr>`;
+      const isDone=task.status==='done';
+      html+=`<tr class="tl-task-row"><td class="tl-label"><span class="status-badge status-${task.status}" style="font-size:.65rem;margin-right:4px;">${statusLabel(task.status)}</span>${task.title}</td>${barCells(task.start_date,task.end_date,taskBarHtml(task,epicColor))}</tr>`;
+      allVisibleSubs.filter(s=>s.task_id===task.id).forEach(sub=>{
+        const subDone=sub.status==='done';
+        html+=`<tr class="tl-sub-row"><td class="tl-label"><span class="${subDone?'sub-status-done':'sub-status-open'}" style="margin-right:4px;">${subDone?'✓':'○'}</span>${sub.title}</td>${barCells(sub.start_date,sub.end_date,subBarHtml(sub))}</tr>`;
       });
     });
   });
 
-  // Recurring section
+  // Recurring
   if(recurringInstances.length){
-    html+=`<tr class="tl-section-divider"><td colspan="${days.length+1}"></td></tr>`;
-    html+=`<tr class="tl-recurring-header">
-      <td class="label-cell">🔄 WIEDERKEHRENDE AUFGABEN</td>
-      ${days.map(d=>`<td class="${dateToStr(d)===todayStr?'today-col':''}"></td>`).join('')}
-    </tr>`;
-    // Group by recurring_task_id – one row per recurring task
+    html+=`<tr class="tl-divider"><td colspan="${days.length+1}"></td></tr>`;
+    html+=`<tr class="tl-rec-header"><td class="tl-label">🔄 WIEDERKEHRENDE AUFGABEN</td>${days.map(d=>`<td class="${dateToStr(d)===todayStr?'today-col':''}"></td>`).join('')}</tr>`;
     recurringTasks.forEach(rt=>{
-      const instances=recurringInstances.filter(i=>i.recurring_task_id===rt.id);
-      if(!instances.length)return;
-      // Build a single row with multiple bars
-      // We need to place all instance bars in the same row
-      // Build cell map: day index -> bar info
+      const ins=recurringInstances.filter(i=>i.recurring_task_id===rt.id);
+      if(!ins.length)return;
+      // One row, multiple bars
       const barMap={};
-      instances.forEach(ri=>{
+      ins.forEach(ri=>{
         let i=0;
         while(i<days.length){
           const ds=dateToStr(days[i]);
           if(ds<ri.start_date||ds>ri.end_date){i++;continue;}
-          let span=0;
-          for(let j=i;j<days.length&&dateToStr(days[j])<=ri.end_date;j++)span++;
-          barMap[i]={span,riId:ri.id,start:ri.start_date,end:ri.end_date};
-          i+=span;
+          let span=0;for(let j=i;j<days.length&&dateToStr(days[j])<=ri.end_date;j++)span++;
+          barMap[i]={span,title:rt.title};i+=span;
         }
       });
       let cells='';let i=0;
       while(i<days.length){
-        const ds=dateToStr(days[i]);
-        const isToday=ds===todayStr;
-        if(barMap[i]){
-          const{span,riId,start,end}=barMap[i];
-          cells+=`<td class="tl-bar-cell ${isToday?'today-col':''}" colspan="${span}">
-            <div class="tl-bar tl-recurring-bar"
-              data-id="${riId}" data-type="recurring"
-              data-start="${start}" data-end="${end}"
-              style="left:2px;right:2px;"
-              title="${rt.title}">
-              <span class="tl-bar-label">${rt.title}</span>
-              ${isAdmin?`<div class="tl-resize-left" data-id="${riId}" data-type="recurring" data-side="left"></div>
-              <div class="tl-resize-right" data-id="${riId}" data-type="recurring" data-side="right"></div>`:''}
-            </div>
-          </td>`;
-          i+=span;
-        }else{
-          cells+=`<td class="${isToday?'today-col':''}"></td>`;i++;
-        }
+        const ds=dateToStr(days[i]);const isToday=ds===todayStr;
+        if(barMap[i]){cells+=`<td class="tl-bar-cell ${isToday?'today-col':''}" colspan="${barMap[i].span}">${recBarHtml(barMap[i].title)}</td>`;i+=barMap[i].span;}
+        else{cells+=`<td class="${isToday?'today-col':''}"></td>`;i++;}
       }
-      html+=`<tr class="tl-recurring-row"><td class="label-cell">🔄 ${rt.title}</td>${cells}</tr>`;
+      html+=`<tr class="tl-rec-row"><td class="tl-label">🔄 ${rt.title}</td>${cells}</tr>`;
     });
   }
 
   html+='</tbody></table>';
-  container.innerHTML=html;
-
-  // ── DRAG & RESIZE ──
-  if(isAdmin){
-    let dragState=null;
-
-    container.addEventListener('mousedown',e=>{
-      const handle=e.target.closest('.tl-resize-left,.tl-resize-right');
-      const bar=e.target.closest('.tl-bar');
-      if(!bar)return;
-      e.preventDefault();
-      if(handle){
-        dragState={mode:handle.classList.contains('tl-resize-left')?'resize-left':'resize-right',bar,itemId:bar.dataset.id,type:bar.dataset.type,origStart:bar.dataset.start,origEnd:bar.dataset.end,startX:e.clientX};
-      }else{
-        dragState={mode:'move',bar,itemId:bar.dataset.id,type:bar.dataset.type,origStart:bar.dataset.start,origEnd:bar.dataset.end,startX:e.clientX};
-      }
-      bar.style.opacity='0.6';
-    });
-
-    window.addEventListener('mousemove',e=>{
-      if(!dragState)return;
-      const deltaX=e.clientX-dragState.startX;
-      const deltaDays=Math.round(deltaX/colW);
-      if(deltaDays===0)return;
-      const origS=new Date(dragState.origStart),origE=new Date(dragState.origEnd);
-      let newStart=new Date(origS),newEnd=new Date(origE);
-      if(dragState.mode==='move'){newStart.setDate(origS.getDate()+deltaDays);newEnd.setDate(origE.getDate()+deltaDays);}
-      else if(dragState.mode==='resize-right'){newEnd.setDate(origE.getDate()+deltaDays);if(newEnd<newStart)return;}
-      else if(dragState.mode==='resize-left'){newStart.setDate(origS.getDate()+deltaDays);if(newStart>newEnd)return;}
-      // Enforce subtask within parent
-      if(dragState.type==='subtask'){
-        const sub=subtasks.find(s=>s.id===dragState.itemId);
-        const parentTask=tasks.find(t=>t.id===sub?.task_id);
-        if(parentTask){
-          if(parentTask.start_date&&dateToStr(newStart)<parentTask.start_date)return;
-          if(parentTask.end_date&&dateToStr(newEnd)>parentTask.end_date)return;
-        }
-      }
-      dragState.newStart=dateToStr(newStart);dragState.newEnd=dateToStr(newEnd);
-    });
-
-    window.addEventListener('mouseup',async()=>{
-      if(!dragState)return;
-      const{itemId,type,newStart,newEnd,bar}=dragState;
-      bar.style.opacity='1';
-      if(newStart&&newEnd&&(newStart!==dragState.origStart||newEnd!==dragState.origEnd)){
-        if(type==='task')await sb.from('tasks').update({start_date:newStart,end_date:newEnd}).eq('id',itemId);
-        else if(type==='subtask')await sb.from('subtasks').update({start_date:newStart,end_date:newEnd}).eq('id',itemId);
-        else if(type==='recurring')await sb.from('recurring_instances').update({start_date:newStart,end_date:newEnd}).eq('id',itemId);
-        toast('Datum aktualisiert ✓');await loadAll();
-      }
-      dragState=null;
-    });
-  }
+  document.getElementById('timeline-container').innerHTML=html;
 }
 
-// ══════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════
 checkSession();
 </script>
 </body>
