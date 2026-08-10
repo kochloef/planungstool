@@ -468,7 +468,7 @@ let currentUser=null,isAdmin=false;
 let editingEpicId=null,editingTaskId=null,editingSubtaskId=null,editingRecurringId=null,currentSubtaskParentId=null;
 let tlMode='week',tlOffset=0;
 let openEpicIds=new Set(),openTaskIds=new Set(),openSubtaskIds=new Set();
-let tlCollapsedEpics=new Set(), tlCollapsedTasks=new Set();
+let tlCollapsedEpics=new Set(), tlCollapsedTasks=new Set(), tlRecurringCollapsed=false;
 let notifPanelOpen=false;
 
 // ── BERLIN TIME ──
@@ -1149,28 +1149,39 @@ function renderTimeline(){
 
   // Recurring section
   if(recurringInstances.length){
+    const recChevron=tlRecurringCollapsed?'▶':'▼';
     html+=`<tr class="tl-divider"><td colspan="${days.length+1}"></td></tr>`;
-    html+=`<tr class="tl-rec-hdr"><td class="tl-lbl">🔄 WIEDERKEHRENDE AUFGABEN</td>${emptyCells()}</tr>`;
-    recurringTasks.forEach(rt=>{
-      const ins=recurringInstances.filter(i=>i.recurring_task_id===rt.id);if(!ins.length)return;
-      const barMap={};
-      ins.forEach(ri=>{
-        let i=0;
+    html+=`<tr class="tl-rec-hdr" data-tl-rec-hdr="1" style="cursor:pointer;">
+      <td class="tl-lbl">
+        <span style="margin-right:6px;font-size:.75rem;color:var(--green);">${recChevron}</span>
+        🔄 WIEDERKEHRENDE AUFGABEN
+        <span style="font-size:.7rem;color:rgba(255,255,255,0.4);margin-left:6px;">${tlRecurringCollapsed?'(eingeklappt)':''}</span>
+      </td>
+      ${emptyCells()}
+    </tr>`;
+
+    if(!tlRecurringCollapsed){
+      recurringTasks.forEach(rt=>{
+        const ins=recurringInstances.filter(i=>i.recurring_task_id===rt.id);if(!ins.length)return;
+        const barMap={};
+        ins.forEach(ri=>{
+          let i=0;
+          while(i<days.length){
+            const ds=dateToStr(days[i]);
+            if(ds<ri.start_date||ds>ri.end_date){i++;continue;}
+            let span=0;for(let j=i;j<days.length&&dateToStr(days[j])<=ri.end_date;j++)span++;
+            barMap[i]={span,title:rt.title};i+=span;
+          }
+        });
+        let cells='';let i=0;
         while(i<days.length){
-          const ds=dateToStr(days[i]);
-          if(ds<ri.start_date||ds>ri.end_date){i++;continue;}
-          let span=0;for(let j=i;j<days.length&&dateToStr(days[j])<=ri.end_date;j++)span++;
-          barMap[i]={span,title:rt.title};i+=span;
+          const ds=dateToStr(days[i]);const isT=ds===today;
+          if(barMap[i]){cells+=`<td class="tl-bar-cell ${isT?'tl-today':''}" colspan="${barMap[i].span}">${recBar(barMap[i].title)}</td>`;i+=barMap[i].span;}
+          else{cells+=`<td class="${isT?'tl-today':''}"></td>`;i++;}
         }
+        html+=`<tr class="tl-rec-row"><td class="tl-lbl">🔄 ${rt.title}</td>${cells}</tr>`;
       });
-      let cells='';let i=0;
-      while(i<days.length){
-        const ds=dateToStr(days[i]);const isT=ds===today;
-        if(barMap[i]){cells+=`<td class="tl-bar-cell ${isT?'tl-today':''}" colspan="${barMap[i].span}">${recBar(barMap[i].title)}</td>`;i+=barMap[i].span;}
-        else{cells+=`<td class="${isT?'tl-today':''}"></td>`;i++;}
-      }
-      html+=`<tr class="tl-rec-row"><td class="tl-lbl">🔄 ${rt.title}</td>${cells}</tr>`;
-    });
+    }
   }
 
   html+='</tbody></table>';
@@ -1190,6 +1201,12 @@ function renderTimeline(){
       const id=cell.dataset.tlTask;
       if(tlCollapsedTasks.has(id)) tlCollapsedTasks.delete(id);
       else tlCollapsedTasks.add(id);
+      renderTimeline();
+    });
+  });
+  document.querySelectorAll('[data-tl-rec-hdr]').forEach(row=>{
+    row.addEventListener('click',()=>{
+      tlRecurringCollapsed=!tlRecurringCollapsed;
       renderTimeline();
     });
   });
