@@ -28,7 +28,6 @@
     .login-logo{font-size:2.5rem;margin-bottom:12px;}
 
     #app{display:none;flex-direction:column;min-height:100vh;}
-
     header{background:var(--dark);color:var(--white);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,0.18);position:sticky;top:0;z-index:100;}
     header .logo{font-size:1.15rem;font-weight:700;color:var(--green);}
     header nav{display:flex;gap:4px;}
@@ -64,7 +63,7 @@
     .view.active{display:block;}
     .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:10px;flex-wrap:wrap;}
     .page-header h2{font-size:1.35rem;color:var(--dark);font-weight:700;}
-    .page-header-actions{display:flex;gap:8px;align-items:center;}
+    .page-header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
     .btn-primary{background:var(--green);color:var(--dark);border:none;padding:9px 20px;border-radius:8px;font-size:.93rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
     .btn-primary:hover{background:#00d492;}
     .btn-secondary{background:var(--white);color:var(--dark);border:1.5px solid var(--gray2);padding:8px 18px;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;}
@@ -106,16 +105,34 @@
     .progress-label{font-size:.72rem;color:#888;margin-top:2px;}
     .done-actions{display:flex;justify-content:flex-end;padding:10px 10px 0;}
 
-    /* EPICS */
-    .epics-list{display:flex;flex-direction:column;gap:18px;}
+    /* EPICS & FOLDERS */
+    .epics-list{display:flex;flex-direction:column;gap:14px;}
+    .folder-block{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+    .folder-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--dark2);color:var(--white);cursor:pointer;user-select:none;}
+    .folder-header-left{display:flex;align-items:center;gap:10px;}
+    .folder-drag-handle{cursor:grab;color:rgba(255,255,255,0.4);font-size:1.1rem;padding:0 2px;}
+    .folder-drag-handle:hover{color:var(--green);}
+    .folder-title{font-weight:700;font-size:.95rem;}
+    .folder-count{font-size:.75rem;color:rgba(255,255,255,0.5);margin-left:4px;}
+    .folder-header-right{display:flex;align-items:center;gap:8px;}
+    .folder-actions button{background:transparent;border:1px solid rgba(255,255,255,0.25);color:var(--white);border-radius:6px;padding:3px 9px;cursor:pointer;font-size:.78rem;transition:all .18s;}
+    .folder-actions button:hover{background:var(--green);color:var(--dark);border-color:var(--green);}
+    .folder-chevron{font-size:.9rem;transition:transform .2s;}
+    .folder-chevron.open{transform:rotate(180deg);}
+    .folder-body{display:none;padding:14px 16px;border-top:2px solid rgba(0,0,0,0.2);}
+    .folder-body.open{display:block;}
+    .folder-epics-drop{display:flex;flex-direction:column;gap:10px;min-height:44px;}
+    .folder-drop-hint{font-size:.78rem;color:#bbb;text-align:center;padding:12px;border:1.5px dashed var(--gray2);border-radius:8px;}
+    .epic-drag-handle{cursor:grab;color:rgba(255,255,255,0.35);font-size:1.05rem;margin-right:2px;}
+    .epic-drag-handle:hover{color:var(--green);}
     .epic-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
     .epic-header{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;background:var(--dark);color:var(--white);cursor:pointer;}
-    .epic-header-left{display:flex;align-items:center;gap:12px;}
+    .epic-header-left{display:flex;align-items:center;gap:10px;}
     .epic-tag{background:var(--green);color:var(--dark);font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:10px;}
     .epic-color-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.4);flex-shrink:0;}
     .epic-title-text{font-weight:700;font-size:1rem;}
     .epic-header-right{display:flex;align-items:center;gap:10px;}
-    .epic-actions button{background:transparent;border:1px solid rgba(255,255,255,0.25);color:var(--white);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:.8rem;}
+    .epic-actions button{background:transparent;border:1px solid rgba(255,255,255,0.25);color:var(--white);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:.8rem;transition:all .18s;}
     .epic-actions button:hover{background:var(--green);color:var(--dark);border-color:var(--green);}
     .epic-chevron{font-size:1rem;transition:transform .2s;}
     .epic-chevron.open{transform:rotate(180deg);}
@@ -123,6 +140,12 @@
     .epic-body.open{display:block;}
     .epic-description{color:#666;font-size:.9rem;margin-bottom:14px;border-bottom:1px solid var(--gray);padding-bottom:12px;}
     .tasks-list{display:flex;flex-direction:column;gap:10px;}
+    .no-folder-section{margin-top:4px;}
+    .no-folder-label{font-size:.8rem;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;padding:6px 2px;border-bottom:1px solid var(--gray);display:flex;align-items:center;gap:8px;}
+    .no-folder-drop{display:flex;flex-direction:column;gap:10px;min-height:44px;}
+    .sortable-ghost{opacity:.35;}
+
+    /* TASK/SUBTASK */
     .task-row{background:var(--bg);border:1.5px solid var(--gray);border-radius:8px;overflow:hidden;}
     .task-row-header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;}
     .task-row-header:hover{background:rgba(0,240,164,0.07);}
@@ -188,11 +211,8 @@
     .timeline-nav button{background:var(--dark);color:var(--white);border:none;border-radius:7px;padding:7px 14px;cursor:pointer;font-size:.95rem;}
     .timeline-nav button:hover{background:var(--dark2);}
     .timeline-period{font-weight:700;font-size:.95rem;color:var(--dark);min-width:180px;text-align:center;}
-
-    /* Timeline wrapper: scrollable but fills width */
     #tl-outer{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius);box-shadow:var(--shadow);background:var(--white);}
-    #tl-inner{width:100%;}/* will be set by JS if needed */
-
+    #tl-inner{width:100%;}
     .tl-table{border-collapse:collapse;width:100%;}
     .tl-table th{background:var(--dark);color:var(--white);padding:9px 4px;font-size:.78rem;text-align:center;border-right:1px solid rgba(255,255,255,0.1);white-space:nowrap;}
     .tl-table th.tl-lbl-th{text-align:left;padding-left:12px;position:sticky;left:0;z-index:10;background:var(--dark);width:220px;min-width:180px;}
@@ -201,12 +221,12 @@
     .tl-table td.tl-lbl{padding:0 8px;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--bg);position:sticky;left:0;z-index:3;border-right:2px solid var(--gray2);width:220px;min-width:180px;}
     .tl-table td.tl-today{background:rgba(0,240,164,0.07);}
     .tl-epic-row td{background:rgba(0,51,35,0.07);}
-    .tl-epic-row td.tl-lbl{background:rgba(0,51,35,0.07);font-weight:700;color:var(--dark);}
+    .tl-epic-row td.tl-lbl{background:rgba(0,51,35,0.07);font-weight:700;color:var(--dark);cursor:pointer;}
     .tl-task-row td.tl-lbl{padding-left:20px;}
     .tl-sub-row td{background:rgba(248,245,241,0.5);}
     .tl-sub-row td.tl-lbl{padding-left:42px;font-size:.79rem;color:#555;background:rgba(248,245,241,0.9);}
     .tl-rec-hdr td{background:rgba(0,51,35,0.12);}
-    .tl-rec-hdr td.tl-lbl{font-weight:700;background:rgba(0,51,35,0.12);color:var(--dark);}
+    .tl-rec-hdr td.tl-lbl{font-weight:700;background:rgba(0,51,35,0.12);color:var(--dark);cursor:pointer;}
     .tl-rec-row td.tl-lbl{padding-left:20px;font-size:.82rem;color:#555;background:rgba(123,158,166,0.07);}
     .tl-rec-row td{background:rgba(123,158,166,0.04);}
     .tl-divider td{background:var(--dark);height:4px;padding:0;}
@@ -223,7 +243,6 @@
     .recurring-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;border-left:4px dashed #7B9EA6;}
     .recurring-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
     .recurring-card-title{font-weight:700;font-size:1rem;}
-    .recurring-card-meta{font-size:.83rem;color:#777;margin-bottom:8px;}
 
     /* COLOR PALETTE */
     .color-palette{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
@@ -338,6 +357,7 @@
       <h2>Epics &amp; Aufgaben</h2>
       <div class="page-header-actions">
         <button class="btn-secondary" id="btn-collapse-all">⬆ Alles einklappen</button>
+        <button class="btn-secondary auth-only" id="btn-add-folder">📁 Neuer Ordner</button>
         <button class="btn-primary auth-only" id="btn-add-epic">＋ Neues Epic</button>
       </div>
     </div>
@@ -375,8 +395,18 @@
     <h3 id="modal-epic-title">Neues Epic</h3>
     <div class="form-group"><label>Titel *</label><input type="text" id="epic-title"/></div>
     <div class="form-group"><label>Beschreibung</label><textarea id="epic-desc"></textarea></div>
+    <div class="form-group"><label>Ordner (optional)</label><select id="epic-folder"><option value="">– Kein Ordner –</option></select></div>
     <div class="form-group"><label>Farbe</label><div class="color-palette" id="epic-color-palette"></div><input type="hidden" id="epic-color" value="#00F0A4"/></div>
     <div class="modal-actions"><button class="btn-secondary" data-close="modal-epic">Abbrechen</button><button class="btn-primary" id="btn-save-epic">Speichern</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-folder">
+  <div class="modal" style="width:460px;max-width:96vw;">
+    <button class="modal-close" data-close="modal-folder">✕</button>
+    <h3 id="modal-folder-title">Neuer Ordner</h3>
+    <div class="form-group"><label>Name *</label><input type="text" id="folder-title" placeholder="z.B. Support, Infrastruktur..."/></div>
+    <div class="modal-actions"><button class="btn-secondary" data-close="modal-folder">Abbrechen</button><button class="btn-primary" id="btn-save-folder">Speichern</button></div>
   </div>
 </div>
 
@@ -461,22 +491,22 @@
 const SUPABASE_URL='https://jemtfgiezphfozeugxic.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImplbXRmZ2llenBoZm96ZXVneGljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzNDY4ODMsImV4cCI6MjEwMTkyMjg4M30.W9ABciU4WWWhQnbOz7e4R7fQFELo0FdT2xvOtEyVwXk';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const COLORS=['#00F0A4','#003323','#004d34','#007a52','#00b87a','#7B9EA6','#4a7a8a','#2d5f6e','#a8d5c2','#d4ede6','#5b8dee','#3a6bc7','#8b5cf6','#06b6d4','#0891b2','#f59e0b','#d97706','#84cc16','#64748b','#94a3b8'];
+const COLORS=['#00F0A4','#003323','#004d34','#007a52','#00b87a','#7B9EA6','#4a7a8a','#2d5f6e','#a8d5c2','#d4ede6','#5b8dee','#3a6bc7','#8b5cf6','#06b6d4','#0891b2','#f59e0b','#d97706','#84cc16','#64748b','#94a3b8','#e11d48','#be123c','#f97316','#ea580c','#eab308','#ca8a04','#10b981','#059669','#6366f1','#4f46e5'];
 
-let epics=[],tasks=[],subtasks=[],comments=[],notifications=[],recurringTasks=[],recurringInstances=[];
+let epics=[],tasks=[],subtasks=[],comments=[],notifications=[],recurringTasks=[],recurringInstances=[],epicFolders=[];
 let currentUser=null,isAdmin=false;
-let editingEpicId=null,editingTaskId=null,editingSubtaskId=null,editingRecurringId=null,currentSubtaskParentId=null;
+let editingEpicId=null,editingTaskId=null,editingSubtaskId=null,editingRecurringId=null,editingFolderId=null;
+let currentSubtaskParentId=null;
 let tlMode='week',tlOffset=0;
 let openEpicIds=new Set(),openTaskIds=new Set(),openSubtaskIds=new Set();
-let tlCollapsedEpics=new Set(), tlCollapsedTasks=new Set(), tlRecurringCollapsed=false;
+let tlCollapsedEpics=new Set(),tlCollapsedTasks=new Set(),tlRecurringCollapsed=false;
 let notifPanelOpen=false;
 
 // ── BERLIN TIME ──
 function todayBerlin(){
   const now=new Date();
   const berlin=new Date(now.toLocaleString('en-US',{timeZone:'Europe/Berlin'}));
-  berlin.setHours(0,0,0,0);
-  return berlin;
+  berlin.setHours(0,0,0,0);return berlin;
 }
 function dateToStr(d){
   const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
@@ -537,16 +567,18 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
 
 // ── DATA ──
 async function loadAll(){
-  const[e,t,s,c,ri,rt]=await Promise.all([
+  const[e,t,s,c,ri,rt,ef]=await Promise.all([
     sb.from('epics').select('*').order('sort_order').order('created_at'),
     sb.from('tasks').select('*').order('sort_order').order('created_at'),
     sb.from('subtasks').select('*').order('sort_order').order('created_at'),
     sb.from('comments').select('*').order('created_at'),
     sb.from('recurring_instances').select('*').order('start_date'),
     sb.from('recurring_tasks').select('*').order('created_at'),
+    sb.from('epic_folders').select('*').order('sort_order').order('created_at'),
   ]);
   epics=e.data||[];tasks=t.data||[];subtasks=s.data||[];
   comments=c.data||[];recurringInstances=ri.data||[];recurringTasks=rt.data||[];
+  epicFolders=ef.data||[];
   await loadNotifications();renderKanban();renderEpics();renderRecurring();
   if(document.getElementById('view-timeline').classList.contains('active'))renderTimeline();
 }
@@ -622,8 +654,7 @@ function buildPalette(cId,hId,sel){
 // ── KANBAN ──
 function renderKanban(){
   ['backlog','todo','in_progress','done'].forEach(status=>{
-    const container=document.getElementById('kanban-'+status);
-    container.innerHTML='';
+    const container=document.getElementById('kanban-'+status);container.innerHTML='';
     tasks.filter(t=>t.status===status).forEach(task=>{
       const epic=epics.find(e=>e.id===task.epic_id);
       const epicColor=epic?.bar_color||'#00F0A4';
@@ -636,7 +667,7 @@ function renderKanban(){
           return`<div class="subtask-pill">
             <span class="subtask-pill-title">${s.title}</span>
             <span class="subtask-pill-status ${isDone?'pill-done':'pill-open'}">${isDone?'✓ Erledigt':'Offen'}</span>
-            ${isAdmin?`<button class="subtask-pill-toggle" data-id="${s.id}" data-done="${isDone?'1':'0'}" title="Status wechseln">⇄</button>`:''}
+            ${isAdmin?`<button class="subtask-pill-toggle" data-id="${s.id}" data-done="${isDone?'1':'0'}">⇄</button>`:''}
           </div>`;
         }).join('')+'</div>';
       }
@@ -685,13 +716,13 @@ document.getElementById('btn-collapse-all').addEventListener('click',()=>{openEp
 // ── EPICS VIEW ──
 function renderEpics(){
   const container=document.getElementById('epics-list');container.innerHTML='';
-  if(!epics.length){container.innerHTML='<p style="color:#aaa;text-align:center;margin-top:40px;">Noch keine Epics vorhanden.</p>';return;}
-  epics.forEach(epic=>{
+
+  function epicCardHTML(epic){
     const epicTasks=tasks.filter(t=>t.epic_id===epic.id);
-    const div=document.createElement('div');div.className='epic-card';
-    div.innerHTML=`
+    return`<div class="epic-card" data-epic-id="${epic.id}">
       <div class="epic-header" data-epic="${epic.id}">
         <div class="epic-header-left">
+          ${isAdmin?`<span class="epic-drag-handle" title="Verschieben">⠿</span>`:''}
           <span class="epic-tag">EPIC</span>
           <span class="epic-color-dot" style="background:${epic.bar_color||'#00F0A4'}"></span>
           <span class="epic-title-text">${epic.title}</span>
@@ -710,17 +741,129 @@ function renderEpics(){
         ${epic.description?`<div class="epic-description">${epic.description}</div>`:''}
         <div class="tasks-list">${epicTasks.map(t=>renderTaskRow(t,epic)).join('')}</div>
         ${isAdmin?`<button class="add-task-btn" data-epic="${epic.id}">＋ Neue Aufgabe hinzufügen</button>`:''}
+      </div>
+    </div>`;
+  }
+
+  // Render folders
+  epicFolders.forEach(folder=>{
+    const folderEpics=epics.filter(e=>e.folder_id===folder.id);
+    const folderOpen=!openEpicIds.has('folder-collapsed-'+folder.id);
+    const folderDiv=document.createElement('div');
+    folderDiv.className='folder-block';folderDiv.dataset.folderId=folder.id;
+    folderDiv.innerHTML=`
+      <div class="folder-header" data-folder="${folder.id}">
+        <div class="folder-header-left">
+          ${isAdmin?`<span class="folder-drag-handle" title="Ordner verschieben">⠿</span>`:''}
+          <span>📁</span>
+          <span class="folder-title">${folder.title}</span>
+          <span class="folder-count">${folderEpics.length} Epic${folderEpics.length!==1?'s':''}</span>
+        </div>
+        <div class="folder-header-right">
+          ${isAdmin?`<div class="folder-actions">
+            <button class="folder-edit" data-id="${folder.id}">✏️</button>
+            <button class="folder-del" data-id="${folder.id}">🗑️</button>
+            <button class="folder-add-epic" data-id="${folder.id}">＋ Epic</button>
+          </div>`:''}
+          <span class="folder-chevron ${folderOpen?'open':''}">▼</span>
+        </div>
+      </div>
+      <div class="folder-body ${folderOpen?'open':''}" id="folder-body-${folder.id}">
+        <div class="folder-epics-drop" id="folder-drop-${folder.id}">
+          ${folderEpics.length?folderEpics.map(e=>epicCardHTML(e)).join(''):'<div class="folder-drop-hint">Epics hierher ziehen</div>'}
+        </div>
+        ${isAdmin?`<button class="btn-secondary folder-add-epic-bottom" data-id="${folder.id}" style="margin-top:10px;width:100%;font-size:.85rem;">＋ Neues Epic in diesem Ordner</button>`:''}
       </div>`;
-    container.appendChild(div);
+    container.appendChild(folderDiv);
   });
+
+  // No-folder section at bottom
+  const noFolderEpics=epics.filter(e=>!e.folder_id);
+  const noFolderDiv=document.createElement('div');
+  noFolderDiv.className='no-folder-section';
+  noFolderDiv.innerHTML=`
+    <div class="no-folder-label">📋 Ohne Ordner <span style="font-weight:400;">(${noFolderEpics.length})</span></div>
+    <div class="no-folder-drop" id="no-folder-drop">
+      ${noFolderEpics.length?noFolderEpics.map(e=>epicCardHTML(e)).join(''):'<div class="folder-drop-hint">Keine Epics ohne Ordner</div>'}
+    </div>`;
+  container.appendChild(noFolderDiv);
+
+  // ── DRAG & DROP ──
+  if(isAdmin){
+    // Sort folders
+    Sortable.create(container,{
+      animation:150,handle:'.folder-drag-handle',ghostClass:'sortable-ghost',
+      draggable:'.folder-block',
+      onEnd:async()=>{
+        const els=[...container.querySelectorAll('.folder-block')];
+        for(let i=0;i<els.length;i++) await sb.from('epic_folders').update({sort_order:i}).eq('id',els[i].dataset.folderId);
+        await loadAll();
+      }
+    });
+    // Sort/move epics within folders
+    epicFolders.forEach(folder=>{
+      const el=document.getElementById('folder-drop-'+folder.id);if(!el)return;
+      Sortable.create(el,{
+        group:'epics',animation:150,handle:'.epic-drag-handle',ghostClass:'sortable-ghost',
+        onEnd:async evt=>{
+          const epicId=evt.item.dataset.epicId;
+          const toId=evt.to.id;
+          const newFolderId=toId==='no-folder-drop'?null:epicFolders.find(f=>`folder-drop-${f.id}`===toId)?.id||null;
+          await sb.from('epics').update({folder_id:newFolderId}).eq('id',epicId);
+          const sibs=[...evt.to.querySelectorAll('[data-epic-id]')];
+          for(let i=0;i<sibs.length;i++) await sb.from('epics').update({sort_order:i}).eq('id',sibs[i].dataset.epicId);
+          await loadAll();
+        }
+      });
+    });
+    // No-folder drop zone
+    const noFolderEl=document.getElementById('no-folder-drop');
+    if(noFolderEl){
+      Sortable.create(noFolderEl,{
+        group:'epics',animation:150,handle:'.epic-drag-handle',ghostClass:'sortable-ghost',
+        onEnd:async evt=>{
+          const epicId=evt.item.dataset.epicId;
+          const toId=evt.to.id;
+          const newFolderId=toId==='no-folder-drop'?null:epicFolders.find(f=>`folder-drop-${f.id}`===toId)?.id||null;
+          await sb.from('epics').update({folder_id:newFolderId}).eq('id',epicId);
+          const sibs=[...evt.to.querySelectorAll('[data-epic-id]')];
+          for(let i=0;i<sibs.length;i++) await sb.from('epics').update({sort_order:i}).eq('id',sibs[i].dataset.epicId);
+          await loadAll();
+        }
+      });
+    }
+  }
+
+  // ── FOLDER TOGGLE ──
+  document.querySelectorAll('.folder-header').forEach(h=>{
+    h.addEventListener('click',e=>{
+      if(e.target.closest('.folder-actions')||e.target.closest('.folder-add-epic-bottom'))return;
+      const id=h.dataset.folder;const key='folder-collapsed-'+id;
+      openEpicIds.has(key)?openEpicIds.delete(key):openEpicIds.add(key);
+      document.getElementById('folder-body-'+id)?.classList.toggle('open');
+      h.querySelector('.folder-chevron')?.classList.toggle('open');
+    });
+  });
+
+  // ── FOLDER BUTTONS ──
+  if(isAdmin){
+    document.querySelectorAll('.folder-edit').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openFolderModal(b.dataset.id);}));
+    document.querySelectorAll('.folder-del').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();deleteFolder(b.dataset.id);}));
+    document.querySelectorAll('.folder-add-epic,.folder-add-epic-bottom').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openEpicModal(null,b.dataset.id);}));
+  }
+
+  // ── EPIC TOGGLE ──
   document.querySelectorAll('.epic-header').forEach(h=>{
     h.addEventListener('click',e=>{
       if(e.target.closest('.epic-actions'))return;
-      const id=h.dataset.epic;openEpicIds.has(id)?openEpicIds.delete(id):openEpicIds.add(id);
-      document.getElementById('epic-body-'+id).classList.toggle('open');
-      h.querySelector('.epic-chevron').classList.toggle('open');
+      const id=h.dataset.epic;
+      openEpicIds.has(id)?openEpicIds.delete(id):openEpicIds.add(id);
+      document.getElementById('epic-body-'+id)?.classList.toggle('open');
+      h.querySelector('.epic-chevron')?.classList.toggle('open');
     });
   });
+
+  // ── EPIC/TASK/SUBTASK BUTTONS ──
   if(isAdmin){
     document.querySelectorAll('.epic-edit').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openEpicModal(b.dataset.id);}));
     document.querySelectorAll('.epic-del').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();deleteEpic(b.dataset.id);}));
@@ -788,8 +931,7 @@ function renderTaskRow(task,epic){
 }
 
 function renderSubtaskRow(s){
-  const isOpen=openSubtaskIds.has(s.id);
-  const isDone=s.status==='done';
+  const isOpen=openSubtaskIds.has(s.id);const isDone=s.status==='done';
   return`<div class="subtask-row">
     <div class="subtask-header" data-subtask="${s.id}">
       <div style="display:flex;align-items:center;gap:8px;">
@@ -853,26 +995,64 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);}));
 
-// EPIC
-function openEpicModal(id=null){
-  editingEpicId=id;document.getElementById('modal-epic-title').textContent=id?'Epic bearbeiten':'Neues Epic';
+// FOLDER MODAL
+function openFolderModal(id=null){
+  editingFolderId=id;
+  document.getElementById('modal-folder-title').textContent=id?'Ordner bearbeiten':'Neuer Ordner';
+  document.getElementById('folder-title').value=id?epicFolders.find(f=>f.id===id)?.title||'':'';
+  openModal('modal-folder');
+}
+document.getElementById('btn-add-folder').addEventListener('click',()=>openFolderModal());
+document.getElementById('btn-save-folder').addEventListener('click',async()=>{
+  const title=document.getElementById('folder-title').value.trim();
+  if(!title){toast('Bitte Namen eingeben.','error');return;}
+  if(editingFolderId){
+    await sb.from('epic_folders').update({title}).eq('id',editingFolderId);toast('Ordner aktualisiert ✓');
+  }else{
+    await sb.from('epic_folders').insert({title,sort_order:epicFolders.length});toast('Ordner erstellt ✓');
+  }
+  closeModal('modal-folder');loadAll();
+});
+async function deleteFolder(id){
+  const ok=await showConfirm('Ordner löschen?','Die enthaltenen Epics bleiben erhalten und werden in "Ohne Ordner" verschoben.');
+  if(!ok)return;
+  await sb.from('epics').update({folder_id:null}).eq('folder_id',id);
+  await sb.from('epic_folders').delete().eq('id',id);
+  toast('Ordner gelöscht');loadAll();
+}
+
+// EPIC MODAL
+function openEpicModal(id=null,presetFolderId=null){
+  editingEpicId=id;
+  document.getElementById('modal-epic-title').textContent=id?'Epic bearbeiten':'Neues Epic';
   const color=id?epics.find(e=>e.id===id)?.bar_color||'#00F0A4':'#00F0A4';
   document.getElementById('epic-color').value=color;
-  if(id){const e=epics.find(x=>x.id===id);document.getElementById('epic-title').value=e.title;document.getElementById('epic-desc').value=e.description||'';}
-  else{document.getElementById('epic-title').value='';document.getElementById('epic-desc').value='';}
+  const sel=document.getElementById('epic-folder');
+  sel.innerHTML='<option value="">– Kein Ordner –</option>'+epicFolders.map(f=>`<option value="${f.id}">${f.title}</option>`).join('');
+  if(id){
+    const e=epics.find(x=>x.id===id);
+    document.getElementById('epic-title').value=e.title;
+    document.getElementById('epic-desc').value=e.description||'';
+    sel.value=e.folder_id||'';
+  }else{
+    document.getElementById('epic-title').value='';
+    document.getElementById('epic-desc').value='';
+    sel.value=presetFolderId||'';
+  }
   buildPalette('epic-color-palette','epic-color',color);openModal('modal-epic');
 }
 document.getElementById('btn-add-epic').addEventListener('click',()=>openEpicModal());
 document.getElementById('btn-save-epic').addEventListener('click',async()=>{
   const title=document.getElementById('epic-title').value.trim();
   if(!title){toast('Bitte Titel eingeben.','error');return;}
-  const p={title,description:document.getElementById('epic-desc').value.trim(),bar_color:document.getElementById('epic-color').value};
+  const folderId=document.getElementById('epic-folder').value||null;
+  const p={title,description:document.getElementById('epic-desc').value.trim(),bar_color:document.getElementById('epic-color').value,folder_id:folderId};
   if(editingEpicId){await sb.from('epics').update(p).eq('id',editingEpicId);toast('Epic aktualisiert ✓');}
   else{await sb.from('epics').insert(p);toast('Epic erstellt ✓');}
   closeModal('modal-epic');loadAll();
 });
 
-// TASK
+// TASK MODAL
 function openTaskModal(id=null,epicId=null){
   editingTaskId=id;document.getElementById('modal-task-title').textContent=id?'Aufgabe bearbeiten':'Neue Aufgabe';
   const sel=document.getElementById('task-epic');sel.innerHTML=epics.map(e=>`<option value="${e.id}">${e.title}</option>`).join('');
@@ -895,58 +1075,26 @@ document.getElementById('btn-save-task').addEventListener('click',async()=>{
   closeModal('modal-task');loadAll();
 });
 
-// SUBTASK
+// SUBTASK MODAL
 function openSubtaskModal(id=null,taskId=null){
   editingSubtaskId=id;currentSubtaskParentId=taskId;
   document.getElementById('modal-subtask-title').textContent=id?'Unteraufgabe bearbeiten':'Neue Unteraufgabe';
   let parentTask=null;
-  if(id){
-    const s=subtasks.find(x=>x.id===id);
-    parentTask=tasks.find(t=>t.id===s.task_id);
-    currentSubtaskParentId=s.task_id;
-    document.getElementById('subtask-title').value=s.title;
-    document.getElementById('subtask-desc').value=s.description||'';
-    document.getElementById('subtask-start').value=s.start_date||'';
-    document.getElementById('subtask-end').value=s.end_date||'';
-    document.getElementById('subtask-est').value=s.estimated_hours||'';
-    document.getElementById('subtask-logged').value=s.logged_hours||'';
-    document.getElementById('subtask-status').value=s.status==='done'?'done':'open';
-  }else{
-    parentTask=tasks.find(t=>t.id===taskId);
-    ['subtask-title','subtask-desc','subtask-est','subtask-logged'].forEach(i=>document.getElementById(i).value='');
-    document.getElementById('subtask-start').value=parentTask?.start_date||'';
-    document.getElementById('subtask-end').value=parentTask?.end_date||'';
-    document.getElementById('subtask-status').value='open';
-  }
-  if(parentTask){
-    if(parentTask.start_date){document.getElementById('subtask-start').min=parentTask.start_date;document.getElementById('subtask-end').min=parentTask.start_date;}
-    if(parentTask.end_date){document.getElementById('subtask-start').max=parentTask.end_date;document.getElementById('subtask-end').max=parentTask.end_date;}
-  }
+  if(id){const s=subtasks.find(x=>x.id===id);parentTask=tasks.find(t=>t.id===s.task_id);currentSubtaskParentId=s.task_id;document.getElementById('subtask-title').value=s.title;document.getElementById('subtask-desc').value=s.description||'';document.getElementById('subtask-start').value=s.start_date||'';document.getElementById('subtask-end').value=s.end_date||'';document.getElementById('subtask-est').value=s.estimated_hours||'';document.getElementById('subtask-logged').value=s.logged_hours||'';document.getElementById('subtask-status').value=s.status==='done'?'done':'open';}
+  else{parentTask=tasks.find(t=>t.id===taskId);['subtask-title','subtask-desc','subtask-est','subtask-logged'].forEach(i=>document.getElementById(i).value='');document.getElementById('subtask-start').value=parentTask?.start_date||'';document.getElementById('subtask-end').value=parentTask?.end_date||'';document.getElementById('subtask-status').value='open';}
+  if(parentTask){if(parentTask.start_date){document.getElementById('subtask-start').min=parentTask.start_date;document.getElementById('subtask-end').min=parentTask.start_date;}if(parentTask.end_date){document.getElementById('subtask-start').max=parentTask.end_date;document.getElementById('subtask-end').max=parentTask.end_date;}}
   updateSubtaskLogged();openModal('modal-subtask');
 }
 function updateSubtaskLogged(){const e=document.getElementById('subtask-est').value;document.getElementById('subtask-logged-group').style.opacity=e?'1':'0.4';document.getElementById('subtask-logged').disabled=!e;}
 document.getElementById('subtask-est').addEventListener('input',updateSubtaskLogged);
 document.getElementById('btn-save-subtask').addEventListener('click',async()=>{
-  const title=document.getElementById('subtask-title').value.trim();
-  if(!title){toast('Bitte Titel eingeben.','error');return;}
+  const title=document.getElementById('subtask-title').value.trim();if(!title){toast('Bitte Titel eingeben.','error');return;}
   const s=document.getElementById('subtask-start').value,e=document.getElementById('subtask-end').value;
   const pt=tasks.find(t=>t.id===currentSubtaskParentId);
-  if(pt){
-    if(pt.start_date&&s&&s<pt.start_date){toast('Startdatum vor übergeordneter Aufgabe!','error');return;}
-    if(pt.end_date&&e&&e>pt.end_date){toast('Enddatum nach übergeordneter Aufgabe!','error');return;}
-  }
+  if(pt){if(pt.start_date&&s&&s<pt.start_date){toast('Startdatum vor übergeordneter Aufgabe!','error');return;}if(pt.end_date&&e&&e>pt.end_date){toast('Enddatum nach übergeordneter Aufgabe!','error');return;}}
   if(s&&e&&e<s){toast('Enddatum vor Startdatum!','error');return;}
   const est=document.getElementById('subtask-est').value,logged=est?document.getElementById('subtask-logged').value:'0';
-  const p={
-    task_id:currentSubtaskParentId,
-    title,
-    description:document.getElementById('subtask-desc').value.trim(),
-    start_date:s||null,
-    end_date:e||null,
-    estimated_hours:est?parseFloat(est):null,
-    logged_hours:logged?parseFloat(logged):0,
-    status:document.getElementById('subtask-status').value
-  };
+  const p={task_id:currentSubtaskParentId,title,description:document.getElementById('subtask-desc').value.trim(),start_date:s||null,end_date:e||null,estimated_hours:est?parseFloat(est):null,logged_hours:logged?parseFloat(logged):0,status:document.getElementById('subtask-status').value};
   if(editingSubtaskId){await sb.from('subtasks').update(p).eq('id',editingSubtaskId);toast('Unteraufgabe aktualisiert ✓');}
   else{await sb.from('subtasks').insert(p);toast('Unteraufgabe erstellt ✓');}
   closeModal('modal-subtask');loadAll();
@@ -1005,7 +1153,7 @@ function renderRecurring(){
     const ins=recurringInstances.filter(i=>i.recurring_task_id===r.id);
     const lbl=r.recurrence_type==='weekly'?`Jeden ${['Montag','Dienstag','Mittwoch','Donnerstag','Freitag'][r.weekday||0]}`:r.recurrence_type==='monthly_workday'?`${r.month_workday}. Arbeitstag`:`Am ${r.month_date}. des Monats`;
     const div=document.createElement('div');div.className='recurring-card';
-    div.innerHTML=`<div class="recurring-card-header"><div class="recurring-card-title">🔄 ${r.title}</div>${isAdmin?`<div style="display:flex;gap:8px;"><button class="btn-secondary rec-edit" data-id="${r.id}" style="font-size:.8rem;padding:5px 12px;">✏️</button><button class="btn-danger rec-del" data-id="${r.id}" style="font-size:.8rem;padding:5px 12px;">🗑️</button></div>`:''}</div><div class="recurring-card-meta">📅 ${lbl} · ⏱ ${r.duration_days} Tag${r.duration_days!==1?'e':''} · ${ins.length} generiert</div>${r.description?`<div style="font-size:.85rem;color:#666;">${r.description}</div>`:''}`;
+    div.innerHTML=`<div class="recurring-card-header"><div class="recurring-card-title">🔄 ${r.title}</div>${isAdmin?`<div style="display:flex;gap:8px;"><button class="btn-secondary rec-edit" data-id="${r.id}" style="font-size:.8rem;padding:5px 12px;">✏️</button><button class="btn-danger rec-del" data-id="${r.id}" style="font-size:.8rem;padding:5px 12px;">🗑️</button></div>`:''}</div><div style="font-size:.83rem;color:#777;margin-bottom:8px;">📅 ${lbl} · ⏱ ${r.duration_days} Tag${r.duration_days!==1?'e':''} · ${ins.length} generiert</div>${r.description?`<div style="font-size:.85rem;color:#666;">${r.description}</div>`:''}`;
     c.appendChild(div);
   });
   document.querySelectorAll('.rec-edit').forEach(b=>b.addEventListener('click',()=>openRecurringModal(b.dataset.id)));
@@ -1043,24 +1191,18 @@ function renderTimeline(){
   const labelW=220;
   const outer=document.getElementById('tl-outer');
   const availW=outer.clientWidth||window.innerWidth-80;
-  const dataW=availW-labelW;
   const minColW=tlMode==='week'?60:22;
-  const naturalColW=Math.max(minColW,Math.floor(dataW/days.length));
+  const naturalColW=Math.max(minColW,Math.floor((availW-labelW)/days.length));
   const totalW=labelW+naturalColW*days.length;
   document.getElementById('tl-inner').style.width=totalW+'px';
 
   let html=`<table class="tl-table" style="width:${totalW}px;table-layout:fixed;">`;
   html+=`<colgroup><col style="width:${labelW}px;min-width:${labelW}px;">${days.map(()=>`<col style="width:${naturalColW}px;">`).join('')}</colgroup>`;
   html+=`<thead><tr><th class="tl-lbl-th" style="width:${labelW}px;">Aufgabe</th>`;
-  html+=days.map(d=>{const ds=dateToStr(d);return`<th class="${ds===today?'tl-today':''}" style="width:${naturalColW}px;">${dayNames[d.getDay()]}<br><span style="font-size:.78em">${d.getDate()}</span></th>`;}).join('');
+  html+=days.map(d=>{const ds=dateToStr(d);return`<th class="${ds===today?'tl-today':''}">${dayNames[d.getDay()]}<br><span style="font-size:.78em">${d.getDate()}</span></th>`;}).join('');
   html+=`</tr></thead><tbody>`;
 
-  // Empty day cells helper
-  function emptyCells(){
-    return days.map(d=>`<td class="${dateToStr(d)===today?'tl-today':''}"></td>`).join('');
-  }
-
-  // Bar cells helper
+  function emptyCells(){return days.map(d=>`<td class="${dateToStr(d)===today?'tl-today':''}"></td>`).join('');}
   function barCells(iStart,iEnd,barInner){
     if(!iStart||!iEnd)return emptyCells();
     const out=[];let i=0;
@@ -1073,72 +1215,46 @@ function renderTimeline(){
     }
     return out.join('');
   }
-
   function taskBar(task,epicColor){
     let pct=0;
     if(task.estimated_hours&&parseFloat(task.estimated_hours)>0)
       pct=Math.min(100,Math.round((parseFloat(task.logged_hours||0)/parseFloat(task.estimated_hours))*100));
-    return`<div class="tl-bar">
-      <div class="tl-bar-bg" style="background:#d6d3cf;"></div>
-      <div class="tl-bar-fill" style="width:${pct}%;background:${epicColor};"></div>
-      <span class="tl-bar-lbl dark">${task.title}</span>
-    </div>`;
+    return`<div class="tl-bar"><div class="tl-bar-bg" style="background:#d6d3cf;"></div><div class="tl-bar-fill" style="width:${pct}%;background:${epicColor};"></div><span class="tl-bar-lbl dark">${task.title}</span></div>`;
   }
   function subBar(sub){
     let pct=0;
     if(sub.estimated_hours&&parseFloat(sub.estimated_hours)>0)
       pct=Math.min(100,Math.round((parseFloat(sub.logged_hours||0)/parseFloat(sub.estimated_hours))*100));
-    return`<div class="tl-bar">
-      <div class="tl-bar-bg" style="background:#7B9EA6;opacity:.35;"></div>
-      <div class="tl-bar-fill" style="width:${pct}%;background:#4a7a8a;opacity:.8;"></div>
-      <span class="tl-bar-lbl">${sub.title}</span>
-    </div>`;
+    return`<div class="tl-bar"><div class="tl-bar-bg" style="background:#7B9EA6;opacity:.35;"></div><div class="tl-bar-fill" style="width:${pct}%;background:#4a7a8a;opacity:.8;"></div><span class="tl-bar-lbl">${sub.title}</span></div>`;
   }
-  function recBar(title){
-    return`<div class="tl-bar"><div class="tl-bar-rec"></div><span class="tl-bar-lbl dark">${title}</span></div>`;
-  }
+  function recBar(title){return`<div class="tl-bar"><div class="tl-bar-rec"></div><span class="tl-bar-lbl dark">${title}</span></div>`;}
 
   const visTasks=tasks.filter(t=>t.status!=='backlog');
-
   epics.forEach(epic=>{
     const epicTasks=visTasks.filter(t=>t.epic_id===epic.id&&t.start_date&&t.end_date);
     if(!epicTasks.length)return;
     const epicColor=epic.bar_color||'#00F0A4';
     const epicCollapsed=tlCollapsedEpics.has(epic.id);
-    const epicChevron=epicCollapsed?'▶':'▼';
-
-    // Epic row – clickable to collapse/expand tasks
-    html+=`<tr class="tl-epic-row" style="cursor:pointer;" data-tl-epic="${epic.id}">
-      <td class="tl-lbl">
-        <span style="margin-right:6px;font-size:.75rem;color:var(--green);">${epicChevron}</span>📁 ${epic.title}
-        <span style="font-size:.7rem;color:rgba(255,255,255,0.4);margin-left:6px;">${epicCollapsed?'(eingeklappt)':''}</span>
-      </td>
+    html+=`<tr class="tl-epic-row" data-tl-epic="${epic.id}" style="cursor:pointer;">
+      <td class="tl-lbl"><span style="margin-right:5px;font-size:.75rem;color:var(--green);">${epicCollapsed?'▶':'▼'}</span>📁 ${epic.title}</td>
       ${emptyCells()}
     </tr>`;
-
     if(!epicCollapsed){
       epicTasks.forEach(task=>{
         const taskSubs=subtasks.filter(s=>s.task_id===task.id&&s.start_date&&s.end_date);
         const taskCollapsed=tlCollapsedTasks.has(task.id);
-        const taskChevron=taskSubs.length?(taskCollapsed?'▶':'▼'):'';
-
-        // Task row – clickable to collapse/expand subtasks
-        html+=`<tr class="tl-task-row ${taskSubs.length?'':''}">
+        html+=`<tr class="tl-task-row">
           <td class="tl-lbl" ${taskSubs.length?`data-tl-task="${task.id}" style="cursor:pointer;"`:''}">
-            ${taskSubs.length?`<span style="margin-right:4px;font-size:.7rem;color:#aaa;">${taskChevron}</span>`:'<span style="margin-right:14px;"></span>'}
+            ${taskSubs.length?`<span style="margin-right:4px;font-size:.7rem;color:#aaa;">${taskCollapsed?'▶':'▼'}</span>`:'<span style="margin-right:14px;"></span>'}
             <span class="status-badge status-${task.status}" style="font-size:.65rem;margin-right:4px;">${statusLabel(task.status)}</span>${task.title}
           </td>
           ${barCells(task.start_date,task.end_date,taskBar(task,epicColor))}
         </tr>`;
-
-        // Subtask rows – only if task not collapsed
         if(!taskCollapsed){
           taskSubs.forEach(sub=>{
             const isDone=sub.status==='done';
             html+=`<tr class="tl-sub-row">
-              <td class="tl-lbl">
-                <span class="${isDone?'sub-status-done':'sub-status-open'}" style="margin-right:4px;">${isDone?'✓':'○'}</span>${sub.title}
-              </td>
+              <td class="tl-lbl"><span class="${isDone?'sub-status-done':'sub-status-open'}" style="margin-right:4px;">${isDone?'✓':'○'}</span>${sub.title}</td>
               ${barCells(sub.start_date,sub.end_date,subBar(sub))}
             </tr>`;
           });
@@ -1152,14 +1268,9 @@ function renderTimeline(){
     const recChevron=tlRecurringCollapsed?'▶':'▼';
     html+=`<tr class="tl-divider"><td colspan="${days.length+1}"></td></tr>`;
     html+=`<tr class="tl-rec-hdr" data-tl-rec-hdr="1" style="cursor:pointer;">
-      <td class="tl-lbl">
-        <span style="margin-right:6px;font-size:.75rem;color:var(--green);">${recChevron}</span>
-        🔄 WIEDERKEHRENDE AUFGABEN
-        <span style="font-size:.7rem;color:rgba(255,255,255,0.4);margin-left:6px;">${tlRecurringCollapsed?'(eingeklappt)':''}</span>
-      </td>
+      <td class="tl-lbl"><span style="margin-right:5px;font-size:.75rem;color:var(--green);">${recChevron}</span>🔄 WIEDERKEHRENDE AUFGABEN</td>
       ${emptyCells()}
     </tr>`;
-
     if(!tlRecurringCollapsed){
       recurringTasks.forEach(rt=>{
         const ins=recurringInstances.filter(i=>i.recurring_task_id===rt.id);if(!ins.length)return;
@@ -1187,32 +1298,26 @@ function renderTimeline(){
   html+='</tbody></table>';
   document.getElementById('tl-container').innerHTML=html;
 
-  // ── CLICK HANDLERS für Ein/Ausklappen ──
+  // Click handlers
   document.querySelectorAll('[data-tl-epic]').forEach(row=>{
     row.addEventListener('click',()=>{
       const id=row.dataset.tlEpic;
-      if(tlCollapsedEpics.has(id)) tlCollapsedEpics.delete(id);
-      else tlCollapsedEpics.add(id);
+      tlCollapsedEpics.has(id)?tlCollapsedEpics.delete(id):tlCollapsedEpics.add(id);
       renderTimeline();
     });
   });
   document.querySelectorAll('[data-tl-task]').forEach(cell=>{
     cell.addEventListener('click',()=>{
       const id=cell.dataset.tlTask;
-      if(tlCollapsedTasks.has(id)) tlCollapsedTasks.delete(id);
-      else tlCollapsedTasks.add(id);
+      tlCollapsedTasks.has(id)?tlCollapsedTasks.delete(id):tlCollapsedTasks.add(id);
       renderTimeline();
     });
   });
   document.querySelectorAll('[data-tl-rec-hdr]').forEach(row=>{
-    row.addEventListener('click',()=>{
-      tlRecurringCollapsed=!tlRecurringCollapsed;
-      renderTimeline();
-    });
+    row.addEventListener('click',()=>{tlRecurringCollapsed=!tlRecurringCollapsed;renderTimeline();});
   });
 }
 
-// Recalculate timeline on window resize
 window.addEventListener('resize',()=>{
   if(document.getElementById('view-timeline').classList.contains('active'))renderTimeline();
 });
