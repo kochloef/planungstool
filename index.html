@@ -1177,15 +1177,18 @@ function updateTaskLogged(){
 document.getElementById('task-est').addEventListener('input',updateTaskLogged);
 document.getElementById('btn-add-task-kanban').addEventListener('click',()=>openTaskModal());
 document.getElementById('btn-save-task').addEventListener('click',async()=>{
+  if(document.getElementById('btn-save-task').dataset.saving==='1')return;
+  document.getElementById('btn-save-task').dataset.saving='1';
   const title=document.getElementById('task-title').value.trim();
   const epicId=document.getElementById('task-epic').value;
-  if(!title){toast('Bitte Titel eingeben.','error');return;}
+  if(!title){toast('Bitte Titel eingeben.','error');document.getElementById('btn-save-task').dataset.saving='';return;}
   const s=document.getElementById('task-start').value,e=document.getElementById('task-end').value;
-  if(s&&e&&e<s){toast('Enddatum vor Startdatum!','error');return;}
+  if(s&&e&&e<s){toast('Enddatum vor Startdatum!','error');document.getElementById('btn-save-task').dataset.saving='';return;}
   const est=document.getElementById('task-est').value,logged=est?document.getElementById('task-logged').value:'0';
   const p={epic_id:epicId,title,description:document.getElementById('task-desc').value.trim(),start_date:s||null,end_date:e||null,estimated_hours:est?parseFloat(est):null,logged_hours:logged?parseFloat(logged):0,status:document.getElementById('task-status').value};
   if(editingTaskId){await sb.from('tasks').update(p).eq('id',editingTaskId);toast('Aufgabe aktualisiert ✓');}
   else{await sb.from('tasks').insert(p);toast('Aufgabe erstellt ✓');}
+  document.getElementById('btn-save-task').dataset.saving='';
   closeModal('modal-task');loadAll();
 });
 
@@ -1230,19 +1233,22 @@ function updateSubtaskLogged(){
 }
 document.getElementById('subtask-est').addEventListener('input',updateSubtaskLogged);
 document.getElementById('btn-save-subtask').addEventListener('click',async()=>{
+  if(document.getElementById('btn-save-subtask').dataset.saving==='1')return;
+  document.getElementById('btn-save-subtask').dataset.saving='1';
   const title=document.getElementById('subtask-title').value.trim();
-  if(!title){toast('Bitte Titel eingeben.','error');return;}
+  if(!title){toast('Bitte Titel eingeben.','error');document.getElementById('btn-save-subtask').dataset.saving='';return;}
   const s=document.getElementById('subtask-start').value,e=document.getElementById('subtask-end').value;
   const pt=tasks.find(t=>t.id===currentSubtaskParentId);
   if(pt){
-    if(pt.start_date&&s&&s<pt.start_date){toast('Startdatum vor übergeordneter Aufgabe!','error');return;}
-    if(pt.end_date&&e&&e>pt.end_date){toast('Enddatum nach übergeordneter Aufgabe!','error');return;}
+    if(pt.start_date&&s&&s<pt.start_date){toast('Startdatum vor übergeordneter Aufgabe!','error');document.getElementById('btn-save-subtask').dataset.saving='';return;}
+    if(pt.end_date&&e&&e>pt.end_date){toast('Enddatum nach übergeordneter Aufgabe!','error');document.getElementById('btn-save-subtask').dataset.saving='';return;}
   }
-  if(s&&e&&e<s){toast('Enddatum vor Startdatum!','error');return;}
+  if(s&&e&&e<s){toast('Enddatum vor Startdatum!','error');document.getElementById('btn-save-subtask').dataset.saving='';return;}
   const est=document.getElementById('subtask-est').value,logged=est?document.getElementById('subtask-logged').value:'0';
   const p={task_id:currentSubtaskParentId,title,description:document.getElementById('subtask-desc').value.trim(),start_date:s||null,end_date:e||null,estimated_hours:est?parseFloat(est):null,logged_hours:logged?parseFloat(logged):0,status:document.getElementById('subtask-status').value};
   if(editingSubtaskId){await sb.from('subtasks').update(p).eq('id',editingSubtaskId);toast('Unteraufgabe aktualisiert ✓');}
   else{await sb.from('subtasks').insert(p);toast('Unteraufgabe erstellt ✓');}
+  document.getElementById('btn-save-subtask').dataset.saving='';
   closeModal('modal-subtask');loadAll();
 });
 
@@ -1568,12 +1574,15 @@ function openEpicModal(id=null,presetFolderId=null){
 }
 document.getElementById('btn-add-epic').addEventListener('click',()=>openEpicModal());
 document.getElementById('btn-save-epic').addEventListener('click',async()=>{
+  if(document.getElementById('btn-save-epic').dataset.saving==='1')return;
+  document.getElementById('btn-save-epic').dataset.saving='1';
   const title=document.getElementById('epic-title').value.trim();
-  if(!title){toast('Bitte Titel eingeben.','error');return;}
+  if(!title){toast('Bitte Titel eingeben.','error');document.getElementById('btn-save-epic').dataset.saving='';return;}
   const folderId=document.getElementById('epic-folder').value||null;
   const p={title,description:document.getElementById('epic-desc').value.trim(),bar_color:document.getElementById('epic-color').value,folder_id:folderId};
   if(editingEpicId){await sb.from('epics').update(p).eq('id',editingEpicId);toast('Epic aktualisiert ✓');}
   else{await sb.from('epics').insert(p);toast('Epic erstellt ✓');}
+  document.getElementById('btn-save-epic').dataset.saving='';
   closeModal('modal-epic');loadAll();
 });
 
